@@ -1,0 +1,3 @@
+/home/chappie/Documents/GitHub/mc-inventory-mockup/cmake-build-debug/CMakeFiles/mc_inventory_mockup.dir
+/home/chappie/Documents/GitHub/mc-inventory-mockup/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/chappie/Documents/GitHub/mc-inventory-mockup/cmake-build-debug/CMakeFiles/rebuild_cache.dir

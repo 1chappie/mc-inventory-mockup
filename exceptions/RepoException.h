@@ -1,0 +1,14 @@
+//
+// Created by chappie on 19.04.2022.
+//
+
+#ifndef MC_INVENTORY_MOCKUP_REPOEXCEPTION_H
+#define MC_INVENTORY_MOCKUP_REPOEXCEPTION_H
+
+
+class RepoException {
+
+};
+
+
+#endif //MC_INVENTORY_MOCKUP_REPOEXCEPTION_H
