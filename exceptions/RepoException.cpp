@@ -3,3 +3,11 @@
 //
 
 #include "RepoException.h"
+
+RepoException::RepoException(const std::string &_message) : message(_message) {}
+
+const char *RepoException::what() const noexcept {
+    return message.c_str();
+}
+
+

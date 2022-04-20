@@ -8,4 +8,6 @@ include_directories(persistence)
 
 add_executable(mc_inventory_mockup
         persistence/Repo.cpp
-        persistence/Repo.h)
+        persistence/Repo.h
+        exceptions/RepoException.cpp
+        exceptions/RepoException.h)
