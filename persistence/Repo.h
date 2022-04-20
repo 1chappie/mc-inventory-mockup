@@ -43,66 +43,66 @@ public:
 
 template<typename TElem>
 Repo<TElem>::Repo(const Repo &other) {
-    this->elems = other.slots;
+    this->slots = other.slots;
 }
 
 template<typename TElem>
-void Repo<TElem>::add(const TElem &element) {
+void Repo<TElem>::add(const TElem &slot) {
     // Due to the way a minecraft inventory works, the items are stackable (up to 64), therefore we will call
     // the elements of the repo "slots", rather than "items" or "elements".
     // Also, checking for duplicates isn't necessary.
-    this->elems.push_back(element);
+    this->slots.push_back(slot);
 }
 
 template<typename TElem>
-void Repo<TElem>::update(const TElem &element) {
+void Repo<TElem>::update(const TElem &slot) {
     // This updates slots based on the item id that lives in them.
-    auto iterator = std::find(this->elems.begin(), this->elems.end(), element);
-    if (iterator == this->elems.end())
-        throw RepoException("Item not found.\n");
-    this->elems[iterator - this->elems.begin()] = element;
+    auto iterator = std::find(this->slots.begin(), this->slots.end(), slot);
+    if (iterator == this->slots.end())
+        throw RepoException("IItem not found.\n");
+    this->slots[iterator - this->slots.begin()] = slot;
 }
 
 template<typename TElem>
-void Repo<TElem>::update(unsigned int slot, const TElem &elem) {
+void Repo<TElem>::update(unsigned int ind, const TElem &slot) {
     // I know that "this isn't the proper way of doing this",
     // but looking up items by order isn't that far-fetched in a game inventory.
-    if (slot >= this->slots.size())
+    if (ind >= this->slots.size())
         throw RepoException("Slot not found.\n");
-    this->elems[slot] = elem;
+    this->slots[ind] = slot;
 }
 
 template<typename TElem>
-void Repo<TElem>::remove(const TElem &element) {
+void Repo<TElem>::remove(const TElem &slot) {
     // The proper way.
-    auto iterator = std::find(this->elems.begin(), this->elems.end(), element);
-    if (iterator == this->elems.end())
-        throw RepoException("Item not found.\n");
-    this->elems.erase(iterator);
+    auto iterator = std::find(this->slots.begin(), this->slots.end(), slot);
+    if (iterator == this->slots.end())
+        throw RepoException("IItem not found.\n");
+    this->slots.erase(iterator);
 }
 
 template<typename TElem>
 void Repo<TElem>::remove(unsigned int slot) {
     if (slot >= this->slots.size())
         throw RepoException("Slot not found.\n");
-    this->elems.erase(this->elems.begin() + slot);
+    this->slots.erase(this->slots.begin() + slot);
 }
 
 template<typename TElem>
-const TElem &Repo<TElem>::search(const TElem &element) {
+const TElem &Repo<TElem>::search(const TElem &slot) {
     // The proper way.
-    auto it = std::find(this->elems.begin(), this->elems.end(), element);
-    if (it == this->elems.end())
-        throw RepoException("Item not found.\n");
+    auto it = std::find(this->slots.begin(), this->slots.end(), slot);
+    if (it == this->slots.end())
+        throw RepoException("IItem not found.\n");
     return *it;
 }
 
 template<typename TElem>
-const TElem &Repo<TElem>::search(unsigned int slot) {
+const TElem &Repo<TElem>::search(unsigned int ind) {
     // And bananas again.
-    if (slot >= this->slots.size())
+    if (ind >= this->slots.size())
         throw RepoException("Slot not found.\n");
-    return *this->slots[slot];
+    return *this->slots[ind];
 }
 
 template<typename TElem>
