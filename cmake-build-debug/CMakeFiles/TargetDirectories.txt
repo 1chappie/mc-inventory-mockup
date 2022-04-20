@@ -1,3 +1,0 @@
-D:/UserPaths/Desktop/GitHub/mc-inventory-mockup/cmake-build-debug/CMakeFiles/mc_inventory_mockup.dir
-D:/UserPaths/Desktop/GitHub/mc-inventory-mockup/cmake-build-debug/CMakeFiles/edit_cache.dir
-D:/UserPaths/Desktop/GitHub/mc-inventory-mockup/cmake-build-debug/CMakeFiles/rebuild_cache.dir
