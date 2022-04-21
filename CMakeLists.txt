@@ -24,4 +24,4 @@ add_executable(mc_inventory_mockup
         domain/UnstackableItem.h
         domain/Consumable.cpp
         domain/Consumable.h
-        main.cpp)
+        main.cpp domain/Armour.cpp domain/Armour.h)

@@ -3,6 +3,7 @@
 //
 #include <iostream>
 #include "Consumable.h"
+#include "Armour.h"
 
 int main() {
 
@@ -13,5 +14,16 @@ int main() {
             .withQuantity(1)
             .withSaturation(2)
             .withEffects(list<Effects>{Effects::POISON});
+
+    Armour DiamondArmour = Armour::build()
+            .withID("diamond_armour")
+            .withDisplayName("Diamond Armour")
+            .withDurabilityMax(100)
+            .withDurability(100)
+            .withProtectionLevel(5)
+            .withEnchantments(list<aEnchantments>{
+                    aEnchantments::THORNS,
+                    aEnchantments::FIRE_PROTECTION});
+
 
 }
