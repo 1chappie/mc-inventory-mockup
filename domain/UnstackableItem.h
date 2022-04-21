@@ -4,10 +4,12 @@
 
 #ifndef MC_INVENTORY_MOCKUP_UNSTACKABLEITEM_H
 #define MC_INVENTORY_MOCKUP_UNSTACKABLEITEM_H
+#include "Item.h"
+#include <list>
 
-
-class UnstackableItem {
-
+class UnstackableItem : public Item {
+protected:
+    bool thing;
 };
 
 

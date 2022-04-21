@@ -59,7 +59,7 @@ void Repo<TElem>::update(const TElem &slot) {
     // This updates slots based on the item id that lives in them.
     auto iterator = std::find(this->slots.begin(), this->slots.end(), slot);
     if (iterator == this->slots.end())
-        throw RepoException("IItem not found.\n");
+        throw RepoException("Item not found.\n");
     this->slots[iterator - this->slots.begin()] = slot;
 }
 
@@ -77,7 +77,7 @@ void Repo<TElem>::remove(const TElem &slot) {
     // The proper way.
     auto iterator = std::find(this->slots.begin(), this->slots.end(), slot);
     if (iterator == this->slots.end())
-        throw RepoException("IItem not found.\n");
+        throw RepoException("Item not found.\n");
     this->slots.erase(iterator);
 }
 
@@ -93,7 +93,7 @@ const TElem &Repo<TElem>::search(const TElem &slot) {
     // The proper way.
     auto it = std::find(this->slots.begin(), this->slots.end(), slot);
     if (it == this->slots.end())
-        throw RepoException("IItem not found.\n");
+        throw RepoException("Item not found.\n");
     return *it;
 }
 

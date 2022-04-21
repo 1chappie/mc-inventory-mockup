@@ -5,25 +5,25 @@
 #ifndef MC_INVENTORY_MOCKUP_STACKABLEITEM_H
 #define MC_INVENTORY_MOCKUP_STACKABLEITEM_H
 
-#include "IItem.h"
+#include "Item.h"
 
-class StackableItem : public IItem {
+class StackableItem : public Item {
 protected:
     unsigned int maxStack;
     unsigned int quantity;
 public:
-    StackableItem(unsigned int _maxStack, unsigned int _quantity,
-                  const string &_id, const string &_displayName, bool _canPlace = false);
+    StackableItem() = default;
+
+    StackableItem(const string &_id, const string &_displayName,
+                  unsigned int _quantity, unsigned int _maxStack = 64, bool _canPlace = false);
+
+    StackableItem(const StackableItem &other, unsigned int _quantity = 0);
 
     unsigned int getQuantity() const;
 
-    void setQuantity(unsigned int _quantity);
+    unsigned int setQuantity(unsigned int _quantity);
 
-    void add(unsigned int _quantity);
-
-    void spend() override;
-
-    void spend(unsigned int _quantity);
+    int addQuantity(int _quantity);
 };
 
 
