@@ -4,6 +4,7 @@
 #include <iostream>
 #include "Consumable.h"
 #include "Armour.h"
+#include "Weapon.h"
 
 int main() {
 
@@ -25,5 +26,15 @@ int main() {
                     aEnchantments::THORNS,
                     aEnchantments::FIRE_PROTECTION});
 
+    Weapon DiamondSword = Weapon::build()
+            .withID("diamond_sword")
+            .withDisplayName("Diamond Sword")
+            .withDurabilityMax(100)
+            .withDurability(100)
+            .withDamage(7)
+            .withEnchantments(list<wEnchantments>{
+                    wEnchantments::FIRE_ASPECT,
+                    wEnchantments::KNOCKBACK});
 
+    std::cout<<DiamondSword.getID()<<std::endl;
 }

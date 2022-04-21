@@ -37,7 +37,7 @@ public:
 
     std::list<aEnchantments> getEnchantments() const;
 
-    int damage();
+    int use();
 
 private:
     Armour() = default;

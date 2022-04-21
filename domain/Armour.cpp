@@ -17,7 +17,7 @@ std::list<aEnchantments> Armour::getEnchantments() const {
     return this->enchantments;
 }
 
-int Armour::damage() {
+int Armour::use() {
     return this->addDurability(-1);
 }
 
