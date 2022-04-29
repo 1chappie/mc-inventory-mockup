@@ -21,3 +21,7 @@ Item::Item(const string &_id, const string &_displayName, const bool &_canPlace)
 Item::Item() {
     this->id = "null";
 }
+
+bool Item::operator==(const Item &other) const {
+    return this->id == other.id;
+}

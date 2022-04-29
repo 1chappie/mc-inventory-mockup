@@ -25,6 +25,8 @@ public:
     string getID() const;
 
     string getDisplayName() const;
+
+    bool operator==(const Item &other) const;
 };
 
 

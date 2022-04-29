@@ -57,10 +57,11 @@ void Repo<TElem>::add(const TElem &slot) {
 template<typename TElem>
 void Repo<TElem>::update(const TElem &slot) {
     // This updates slots based on the item id that lives in them.
-    auto iterator = std::find(this->slots.begin(), this->slots.end(), slot);
-    if (iterator == this->slots.end())
+    // Going from last to first.
+    auto iterator = std::find(this->slots.rbegin(), this->slots.rend(), slot);
+    if (iterator == this->slots.rend())
         throw RepoException("Item not found.\n");
-    this->slots[iterator - this->slots.begin()] = slot;
+    this->slots[iterator - this->slots.rbegin()] = slot;
 }
 
 template<typename TElem>
@@ -75,8 +76,8 @@ void Repo<TElem>::update(unsigned int ind, const TElem &slot) {
 template<typename TElem>
 void Repo<TElem>::remove(const TElem &slot) {
     // The proper way.
-    auto iterator = std::find(this->slots.begin(), this->slots.end(), slot);
-    if (iterator == this->slots.end())
+    auto iterator = std::find(this->slots.rbegin(), this->slots.rend(), slot);
+    if (iterator == this->slots.rend())
         throw RepoException("Item not found.\n");
     this->slots.erase(iterator);
 }
@@ -85,14 +86,14 @@ template<typename TElem>
 void Repo<TElem>::remove(unsigned int slot) {
     if (slot >= this->slots.size())
         throw RepoException("Slot not found.\n");
-    this->slots.erase(this->slots.begin() + slot);
+    this->slots.erase(this->slots.rbegin() + slot);
 }
 
 template<typename TElem>
 const TElem &Repo<TElem>::search(const TElem &slot) {
     // The proper way.
-    auto it = std::find(this->slots.begin(), this->slots.end(), slot);
-    if (it == this->slots.end())
+    auto it = std::find(this->slots.rbegin(), this->slots.rend(), slot);
+    if (it == this->slots.rend())
         throw RepoException("Item not found.\n");
     return *it;
 }
