@@ -27,6 +27,9 @@ public:
     unsigned int setDurability(unsigned int _quantity);
 
     int addDurability(int _quantity);
+
+    inline bool isStackable() const override { return false; }
+
 };
 
 

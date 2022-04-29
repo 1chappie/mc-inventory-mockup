@@ -27,6 +27,9 @@ public:
     string getDisplayName() const;
 
     bool operator==(const Item &other) const;
+
+    virtual bool isStackable() const = 0;
+
 };
 
 

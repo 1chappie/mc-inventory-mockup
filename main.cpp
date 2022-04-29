@@ -12,7 +12,6 @@ int main() {
             .withID("steak")
             .withDisplayName("Steak")
             .withMaxStack(64)
-            .withQuantity(1)
             .withSaturation(2)
             .withEffects(list<Effects>{Effects::POISON});
 
@@ -36,5 +35,6 @@ int main() {
                     wEnchantments::FIRE_ASPECT,
                     wEnchantments::KNOCKBACK});
 
-    std::cout<<DiamondSword.getID()<<std::endl;
+    for (auto &i: DiamondSword.getEnchantments())
+        std::cout << 1 << std::endl;
 }

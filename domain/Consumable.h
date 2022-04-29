@@ -27,13 +27,11 @@ public:
 
     static ConsumableBuilder build();
 
-    Consumable(const Consumable &_other, unsigned int _quantity = 0);
+    Consumable(const Consumable &_other);
 
     int getSaturation() const;
 
     list<Effects> getEffects() const;
-
-    int consume();
 
 private:
     Consumable() = default;
@@ -50,8 +48,6 @@ public:
     ConsumableBuilder &withDisplayName(const string &displayName);
 
     ConsumableBuilder &withMaxStack(unsigned int maxStack);
-
-    ConsumableBuilder &withQuantity(unsigned int quantity);
 
     ConsumableBuilder &withSaturation(int saturation);
 

@@ -4,13 +4,11 @@
 
 #include "Consumable.h"
 
-Consumable::Consumable(const Consumable &_other, unsigned int _quantity) :
-        StackableItem(_other.id, _other.displayName, _other.quantity,
+Consumable::Consumable(const Consumable &_other) :
+        StackableItem(_other.id, _other.displayName,
                       _other.maxStack, _other.canPlace),
         saturation(_other.saturation),
-        effects(_other.effects) {
-    if (_quantity) this->quantity = _quantity;
-}
+        effects(_other.effects) {}
 
 int Consumable::getSaturation() const {
     return this->saturation;
@@ -18,10 +16,6 @@ int Consumable::getSaturation() const {
 
 list<Effects> Consumable::getEffects() const {
     return this->effects;
-}
-
-int Consumable::consume() {
-    return this->addQuantity(-1);
 }
 
 ConsumableBuilder &ConsumableBuilder::withID(const string &id) {
@@ -36,11 +30,6 @@ ConsumableBuilder &ConsumableBuilder::withDisplayName(const string &displayName)
 
 ConsumableBuilder &ConsumableBuilder::withMaxStack(unsigned int maxStack) {
     this->b_consumable.maxStack = maxStack;
-    return *this;
-}
-
-ConsumableBuilder &ConsumableBuilder::withQuantity(unsigned int quantity) {
-    this->b_consumable.quantity = quantity;
     return *this;
 }
 

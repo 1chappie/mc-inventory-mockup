@@ -10,20 +10,15 @@
 class StackableItem : public Item {
 protected:
     unsigned int maxStack;
-    unsigned int quantity;
 public:
     StackableItem() = default;
 
     StackableItem(const string &_id, const string &_displayName,
-                  unsigned int _quantity, unsigned int _maxStack = 64, bool _canPlace = false);
+                  unsigned int _maxStack = 64, bool _canPlace = false);
 
-    StackableItem(const StackableItem &other, unsigned int _quantity = 0);
+    StackableItem(const StackableItem &other);
 
-    unsigned int getQuantity() const;
-
-    unsigned int setQuantity(unsigned int _quantity);
-
-    int addQuantity(int _quantity);
+    inline bool isStackable() const override { return true; }
 };
 
 
