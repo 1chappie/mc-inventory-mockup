@@ -8,13 +8,15 @@
 #include <vector>
 #include <algorithm>
 #include "../exceptions/RepoException.h"
+#include <utility>
 
 using std::vector;
+using std::pair;
 
 template<typename TElem>
 class Repo {
 protected:
-    vector<TElem> slots;
+    vector<pair<TElem, unsigned int>> slots;
 public:
     Repo() = default;
 
@@ -22,21 +24,25 @@ public:
 
     ~Repo() = default;
 
-    virtual void add(const TElem &);
+    virtual void addSlot(const TElem &, unsigned int _qty);
 
-    virtual void update(const TElem &);
+    //find an item by id and replace it
+    virtual void updateSlot(const TElem &, unsigned int _qty = 0);
 
-    virtual void update(unsigned int, const TElem &);
+    //find an item by index replace it
+    virtual void updateSlotAt(unsigned int, const TElem &, unsigned int _qty = 0);
 
-    virtual void remove(const TElem &);
+    //by id
+    virtual void popSlot(const TElem &);
 
-    virtual void remove(unsigned int);
+    //by index
+    virtual void popSlotAt(unsigned int);
 
-    virtual const TElem &search(const TElem &);
+    virtual pair<TElem, unsigned int> &slotWhere(const TElem &);
 
-    virtual const TElem &search(unsigned int);
+    virtual pair<TElem, unsigned int> &slotAt(unsigned int);
 
-    virtual const vector<TElem> &getAll();
+    virtual const pair<TElem, unsigned int> &getAll();
 
     virtual int size();
 };
@@ -47,67 +53,71 @@ Repo<TElem>::Repo(const Repo &other) {
 }
 
 template<typename TElem>
-void Repo<TElem>::add(const TElem &slot) {
+void Repo<TElem>::addSlot(const TElem &_item, unsigned int _qty) {
     // Due to the way a minecraft inventory works, the items are stackable (up to 64), therefore we will call
     // the elements of the repo "slots", rather than "items" or "elements".
     // Also, checking for duplicates isn't necessary.
-    this->slots.push_back(slot);
+    this->slots.push_back(std::make_pair(_item, _qty));
 }
 
 template<typename TElem>
-void Repo<TElem>::update(const TElem &slot) {
+void Repo<TElem>::updateSlot(const TElem &_item, unsigned int _qty) {
     // This updates slots based on the item id that lives in them.
     // Going from last to first.
-    auto iterator = std::find(this->slots.rbegin(), this->slots.rend(), slot);
-    if (iterator == this->slots.rend())
+    // TODO prolly broken
+    auto it = std::find_if(this->slots.rbegin(), this->slots.rend(),
+                           [_item](auto slot) { slot.first == _item; });
+    if (it == this->slots.rend())
         throw RepoException("Item not found.\n");
-    this->slots[iterator - this->slots.rbegin()] = slot;
+    this->slots[it - this->slots.rbegin()] = std::make_pair(_item, _qty);
 }
 
 template<typename TElem>
-void Repo<TElem>::update(unsigned int ind, const TElem &slot) {
+void Repo<TElem>::updateSlotAt(unsigned int _ind, const TElem &_item, unsigned int _qty) {
     // I know that "this isn't the proper way of doing this",
     // but looking up items by order isn't that far-fetched in a game inventory.
-    if (ind >= this->slots.size())
+    if (_ind >= this->slots.size())
         throw RepoException("Slot not found.\n");
-    this->slots[ind] = slot;
+    this->slots[_ind] = std::make_pair(_item, _qty);
 }
 
 template<typename TElem>
-void Repo<TElem>::remove(const TElem &slot) {
+void Repo<TElem>::popSlot(const TElem &_item) {
     // The proper way.
-    auto iterator = std::find(this->slots.rbegin(), this->slots.rend(), slot);
-    if (iterator == this->slots.rend())
+    auto it = std::find_if(this->slots.rbegin(), this->slots.rend(),
+                           [_item](auto slot) { slot.first == _item; });
+    if (it == this->slots.rend())
         throw RepoException("Item not found.\n");
-    this->slots.erase(iterator);
+    this->slots.erase(it);
 }
 
 template<typename TElem>
-void Repo<TElem>::remove(unsigned int slot) {
-    if (slot >= this->slots.size())
+void Repo<TElem>::popSlotAt(unsigned int _ind) {
+    if (_ind >= this->slots.size())
         throw RepoException("Slot not found.\n");
-    this->slots.erase(this->slots.rbegin() + slot);
+    this->slots.erase(this->slots.rbegin() + _ind);
 }
 
 template<typename TElem>
-const TElem &Repo<TElem>::search(const TElem &slot) {
+pair<TElem, unsigned int> &Repo<TElem>::slotWhere(const TElem &_item) {
     // The proper way.
-    auto it = std::find(this->slots.rbegin(), this->slots.rend(), slot);
+    auto it = std::find_if(this->slots.rbegin(), this->slots.rend(),
+                           [_item](auto slot) { slot.first == _item; });
     if (it == this->slots.rend())
         throw RepoException("Item not found.\n");
     return *it;
 }
 
 template<typename TElem>
-const TElem &Repo<TElem>::search(unsigned int ind) {
+pair<TElem, unsigned int> &Repo<TElem>::slotAt(unsigned int _ind) {
     // And bananas again.
-    if (ind >= this->slots.size())
+    if (_ind >= this->slots.size())
         throw RepoException("Slot not found.\n");
-    return *this->slots[ind];
+    return *this->slots[_ind];
 }
 
 template<typename TElem>
-const vector<TElem> &Repo<TElem>::getAll() {
+const pair<TElem, unsigned int> &Repo<TElem>::getAll() {
     return this->slots;
 }
 
