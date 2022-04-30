@@ -12,7 +12,6 @@ include_directories(service)
 
 add_executable(mc_inventory_mockup
         persistence/Repo.h
-        exceptions/RepoException.cpp
         exceptions/RepoException.h
         domain/IItem.cpp
         domain/IItem.h
@@ -31,4 +30,4 @@ add_executable(mc_inventory_mockup
         domain/unstackable/Weapon.h
         persistence/Repo.cpp
         service/EnchantmentService.cpp
-        service/EnchantmentService.h)
+        service/EnchantmentService.h exceptions/EnchantException.h)

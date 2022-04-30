@@ -7,6 +7,7 @@
 
 #include "../domain/unstackable/Armour.h"
 #include "../domain/unstackable/Weapon.h"
+#include "../exceptions/EnchantException.h"
 
 class EnchantmentService {
 public:

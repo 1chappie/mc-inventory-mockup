@@ -7,6 +7,7 @@
 #include "unstackable/Weapon.h"
 #include "Repo.h"
 #include "InventoryService.h"
+#include "EnchantmentService.h"
 
 int main() {
 
@@ -82,6 +83,12 @@ int main() {
     std::cout << "After clearing" << std::endl;
     for (auto &i: invRepo.getAll())
         std::cout << i.second << " " << i.first->getDisplayName() << std::endl;
+
+    EnchantmentService::enchant(&DiamondArmour2);
+    EnchantmentService::enchant(&DiamondArmour2);
+
+    std::cout << "After enchanting" << std::endl;
+    std::cout<<DiamondArmour2.getTooltip()<<std::endl;
 
 //    std::cout<<invService.getLastRef(&steak).second<<std::endl;
 

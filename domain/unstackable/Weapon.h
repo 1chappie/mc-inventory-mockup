@@ -23,6 +23,8 @@ protected:
     unsigned int damage;
     std::list<wEnchantments> enchantments;
 public:
+    friend class EnchantmentService;
+
     friend class WeaponBuilder;
 
     static WeaponBuilder build();

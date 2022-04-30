@@ -12,9 +12,11 @@ class RepoException : public std::exception {
 private:
     std::string message;
 public:
-    RepoException(const std::string &_message);
+    RepoException(const std::string &_message) : message(_message) {}
 
-    const char *what() const noexcept override;
+    const char *what() const noexcept override {
+        return message.c_str();
+    }
 };
 
 

@@ -28,6 +28,8 @@ protected:
     unsigned int protectionLevel;
     std::list<aEnchantments> enchantments;
 public:
+    friend class EnchantmentService;
+
     friend class ArmourBuilder;
 
     static ArmourBuilder build();
