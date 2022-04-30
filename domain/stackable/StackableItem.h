@@ -18,6 +18,8 @@ public:
 
     StackableItem(const StackableItem &other);
 
+    unsigned int getMaxStack() const;
+
     inline bool isStackable() const override { return true; }
 
     string getTooltip() const override;

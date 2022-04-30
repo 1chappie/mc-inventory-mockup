@@ -6,13 +6,14 @@
 #include "unstackable/Armour.h"
 #include "unstackable/Weapon.h"
 #include "Repo.h"
+#include "InventoryService.h"
 
 int main() {
 
     Consumable steak = Consumable::build()
             .withID("steak")
             .withDisplayName("Steak")
-            .withMaxStack(64)
+            .withMaxStack(16)
             .withSaturation(2)
             .withEffects(list<Effects>{Effects::POISON});
 
@@ -37,18 +38,14 @@ int main() {
                     wEnchantments::KNOCKBACK});
 
     Repo invRepo;
-    invRepo.addSlot(&steak, 1);
+    invRepo.addSlot(&steak, 10);
     invRepo.addSlot(&DiamondArmour, 1);
+    invRepo.addSlot(&DiamondSword, 1);
     for (auto &i: invRepo.getAll())
-        std::cout << i.first->getDisplayName() << std::endl;
-
-    std::cout << dynamic_cast<Armour *>(invRepo.getAll()[1].first)->getTooltip();
-
-    invRepo.updateSlot(&steak, 20);
-    std::cout << invRepo.getAll()[0].second << std::endl;
+        std::cout << i.second << " " << i.first->getDisplayName() << std::endl;
 
     Armour DiamondArmour2 = Armour::build()
-            .withID("diamond_armour")
+            .withID("diamond_armouvr")
             .withDisplayName("Diamond Armour")
             .withDurabilityMax(100)
             .withDurability(140)
@@ -58,17 +55,44 @@ int main() {
                     aEnchantments::FIRE_PROTECTION,
                     aEnchantments::PROTECTION});
 
-    invRepo.updateSlot(&DiamondArmour2, 1);
+//    std::cout << dynamic_cast<Armour *>(invRepo.getAll()[1].first)->getTooltip();
 
-    std::cout << invRepo.getAll()[1].first->getTooltip() << std::endl;
+    InventoryService invService(invRepo);
 
-    invRepo.updateSlotAt(1, &DiamondSword);
+    invService.give(&steak, 40);
 
-    std::cout << invRepo.getAll()[1].first->getTooltip() << std::endl;
+    for (auto &i: invRepo.getAll())
+        std::cout << i.second << " " << i.first->getDisplayName() << std::endl;
 
-    invRepo.addSlot(&DiamondArmour, 1);
+//    std::cout<<invService.getLastRef(&steak).second<<std::endl;
 
-    std::cout << invRepo.size() << std::endl;
+//    std::cout << invService.total(&DiamondArmour2) << std::endl;
+
+//    invService.add(&DiamondArmour2, 1);
+//    std::cout<<invRepo.firstSlotWhere(&steak).second;
+//    std::cout<<(nullptr == invService.getLastRef(&DiamondArmour2))<<std::endl;
+
+//    invService.getAll()[0].second = 10;
+
+//    invRepo.getAll()[0].second = 69;
+
+//    std::cout<<invService.getAll()[0].second<<std::endl;
+
+//    std::cout << invRepo.getAll()[0].second << std::endl;
+
+
+
+//    invRepo.updateSlot(&DiamondArmour2, 1);
+
+//    std::cout << invRepo.getAll()[1].first->getTooltip() << std::endl;
+//
+//    invRepo.updateSlotAt(1, &DiamondSword);
+
+//    std::cout << invRepo.getAll()[1].first->getTooltip() << std::endl;
+//
+//    invRepo.addSlot(&DiamondArmour, 1);
+
+//    std::cout << invRepo.size() << std::endl;
 
 //    invRepo.popSlot(&DiamondSword);
 //
@@ -83,8 +107,8 @@ int main() {
 //    std::cout << invRepo.getAll()[0].first->getTooltip()<<std::endl;
 //
 //    std::cout<<invRepo.size()<<std::endl;
-
-    std::cout << invRepo.slotAt(0).first->getTooltip() << std::endl;
+//
+//    std::cout << invRepo.slotAt(0).first->getTooltip() << std::endl;
 
 
 }

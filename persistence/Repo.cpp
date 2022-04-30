@@ -46,12 +46,20 @@ void Repo::popSlotAt(unsigned int _ind) {
     this->slots.erase(this->slots.begin() + _ind);
 }
 
-pair<IItem *, unsigned int> &Repo::slotWhere(IItem *_item) {
+pair<IItem *, unsigned int> &Repo::lastSlotWhere(IItem *_item) {
     auto it = std::find_if(this->slots.rbegin(), this->slots.rend(),
                            [_item](auto slot) { return slot.first->getID() == _item->getID(); });
     if (it == this->slots.rend())
         throw RepoException("Item not found.\n");
     return this->slots[std::distance(this->slots.begin(), it.base() - 1)];
+}
+
+pair<IItem *, unsigned int> &Repo::firstSlotWhere(IItem *_item) {
+    auto it = std::find_if(this->slots.begin(), this->slots.end(),
+                           [_item](auto slot) { return slot.first->getID() == _item->getID(); });
+    if (it == this->slots.end())
+        throw RepoException("Item not found.\n");
+    return this->slots[std::distance(this->slots.begin(), it)];
 }
 
 pair<IItem *, unsigned int> &Repo::slotAt(unsigned int _ind) {
@@ -60,7 +68,7 @@ pair<IItem *, unsigned int> &Repo::slotAt(unsigned int _ind) {
     return this->slots[_ind];
 }
 
-vector<pair<struct IItem *, unsigned int>> Repo::getAll() {
+vector<pair<struct IItem *, unsigned int>> &Repo::getAll() {
     return this->slots;
 }
 

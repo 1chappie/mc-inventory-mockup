@@ -19,5 +19,9 @@ string StackableItem::getTooltip() const {
            this->getID() + "\n";
 }
 
+unsigned int StackableItem::getMaxStack() const {
+    return this->maxStack;
+}
+
 
 

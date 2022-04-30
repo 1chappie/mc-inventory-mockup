@@ -19,6 +19,8 @@ protected:
     vector<pair<IItem *, unsigned int>> slots;
 
 public:
+    friend class InventoryService;
+
     Repo();
 
     Repo(const Repo &other);
@@ -39,11 +41,13 @@ public:
     //by index
     virtual void popSlotAt(unsigned int);
 
-    virtual pair<IItem *, unsigned int> &slotWhere(IItem *);
+    virtual pair<IItem *, unsigned int> &lastSlotWhere(IItem *);
+
+    virtual pair<IItem *, unsigned int> &firstSlotWhere(IItem *);
 
     virtual pair<IItem *, unsigned int> &slotAt(unsigned int);
 
-    virtual vector<pair<struct IItem *, unsigned int>> getAll();
+    virtual vector<pair<struct IItem *, unsigned int>> &getAll();
 
     virtual int size();
 };
