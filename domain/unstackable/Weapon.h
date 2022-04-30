@@ -5,15 +5,16 @@
 #ifndef MC_INVENTORY_MOCKUP_WEAPON_H
 #define MC_INVENTORY_MOCKUP_WEAPON_H
 
+#include "UnstackableItem.h"
+#include <list>
+#include <map>
+
 enum class wEnchantments {
     SHARPNESS,
     KNOCKBACK,
     FIRE_ASPECT,
     LOOTING
 };
-
-#include "UnstackableItem.h"
-#include <list>
 
 class WeaponBuilder;
 
@@ -33,6 +34,8 @@ public:
     std::list<wEnchantments> getEnchantments() const;
 
     int use();
+
+    string getTooltip() const override;
 
 private:
     Weapon() = default;

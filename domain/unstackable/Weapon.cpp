@@ -4,6 +4,13 @@
 
 #include "Weapon.h"
 
+std::map<wEnchantments, std::string> wEnchantmentNames = {
+        {wEnchantments::SHARPNESS,   "Sharpness"},
+        {wEnchantments::KNOCKBACK,   "Knockback"},
+        {wEnchantments::FIRE_ASPECT, "Fire Aspect"},
+        {wEnchantments::LOOTING,     "Looting"}
+};
+
 Weapon::Weapon(const Weapon &other) :
         UnstackableItem(other.id, other.displayName, other.durability, other.durabilityMax),
         damage(other.damage),
@@ -23,6 +30,22 @@ int Weapon::use() {
 
 WeaponBuilder Weapon::build() {
     return {};
+}
+
+string Weapon::getTooltip() const {
+    string tooltip;
+    tooltip += this->getDisplayName() + "\n" + this->getID() + "\n";
+    tooltip += "Durability: " +
+               std::to_string(this->durability) + "/" +
+               std::to_string(this->durabilityMax) + "\n";
+    tooltip += "Damage: " +
+               std::to_string(this->damage) + "\n";
+    if (!this->enchantments.empty()) {
+        tooltip += "Enchantments: \n";
+        for (auto enchantment: this->enchantments)
+            tooltip += "\"" + wEnchantmentNames[enchantment] + "\"\n";
+    }
+    return tooltip;
 }
 
 WeaponBuilder &WeaponBuilder::withID(const string &_id) {

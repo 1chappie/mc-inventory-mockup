@@ -14,14 +14,19 @@ add_executable(mc_inventory_mockup
         persistence/Repo.h
         exceptions/RepoException.cpp
         exceptions/RepoException.h
-        domain/Item.cpp
-        domain/Item.h
-        domain/StackableItem.cpp
-        domain/StackableItem.h
+        domain/IItem.cpp
+        domain/IItem.h
+        domain/stackable/StackableItem.cpp
+        domain/stackable/StackableItem.h
         service/ItemService.cpp
         service/ItemService.h
-        domain/UnstackableItem.cpp
-        domain/UnstackableItem.h
-        domain/Consumable.cpp
-        domain/Consumable.h
-        main.cpp domain/Armour.cpp domain/Armour.h domain/Weapon.cpp domain/Weapon.h)
+        domain/unstackable/UnstackableItem.cpp
+        domain/unstackable/UnstackableItem.h
+        domain/stackable/Consumable.cpp
+        domain/stackable/Consumable.h
+        main.cpp
+        domain/unstackable/Armour.cpp
+        domain/unstackable/Armour.h
+        domain/unstackable/Weapon.cpp
+        domain/unstackable/Weapon.h
+        persistence/Repo.cpp)

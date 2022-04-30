@@ -7,12 +7,17 @@
 
 StackableItem::StackableItem(const string &_id, const string &_displayName,
                              unsigned int _maxStack, bool _canPlace) :
-        Item(_id, _displayName, _canPlace),
+        IItem(_id, _displayName, _canPlace),
         maxStack(_maxStack) {}
 
 StackableItem::StackableItem(const StackableItem &other) :
-        Item(other.id, other.displayName, other.canPlace),
+        IItem(other.id, other.displayName, other.canPlace),
         maxStack(other.maxStack) {}
+
+string StackableItem::getTooltip() const {
+    return this->getDisplayName() + "\n" +
+           this->getID() + "\n";
+}
 
 
 

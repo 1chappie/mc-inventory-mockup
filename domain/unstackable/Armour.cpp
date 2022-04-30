@@ -4,6 +4,18 @@
 
 #include "Armour.h"
 
+std::map<aEnchantments, std::string> aEnchantmentNames = {
+        {aEnchantments::PROTECTION,            "Protection"},
+        {aEnchantments::FIRE_PROTECTION,       "Fire Protection"},
+        {aEnchantments::FEATHER_FALLING,       "Feather Falling"},
+        {aEnchantments::BLAST_PROTECTION,      "Blast Protection"},
+        {aEnchantments::PROJECTILE_PROTECTION, "Projectile Protection"},
+        {aEnchantments::RESPIRATION,           "Respiration"},
+        {aEnchantments::AQUA_AFFINITY,         "Aqua Affinity"},
+        {aEnchantments::THORNS,                "Thorns"},
+        {aEnchantments::DEPTH_STRIDER,         "Depth Strider"}
+};
+
 Armour::Armour(const Armour &_other) :
         UnstackableItem(_other.id, _other.displayName, _other.durability, _other.durabilityMax),
         protectionLevel(_other.protectionLevel),
@@ -23,6 +35,22 @@ int Armour::use() {
 
 ArmourBuilder Armour::build() {
     return {};
+}
+
+string Armour::getTooltip() const {
+    string tooltip;
+    tooltip += this->getDisplayName() + "\n" + this->getID() + "\n";
+    tooltip += "Durability: " +
+               std::to_string(this->durability) + "/" +
+               std::to_string(this->durabilityMax) + "\n";
+    tooltip += "Protection: " +
+               std::to_string(this->protectionLevel) + "\n";
+    if (!this->enchantments.empty()) {
+        tooltip += "Enchantments: \n";
+        for (auto enchantment: this->enchantments)
+            tooltip += "\"" + aEnchantmentNames[enchantment] + "\"\n";
+    }
+    return tooltip;
 }
 
 ArmourBuilder &ArmourBuilder::withID(const string &_id) {

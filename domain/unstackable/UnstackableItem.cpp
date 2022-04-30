@@ -7,20 +7,20 @@
 
 
 UnstackableItem::UnstackableItem(const string &_id, const string &_displayName) :
-        Item(_id, _displayName, true),
+        IItem(_id, _displayName, true),
         hasDurability(false),
         durability(0),
         durabilityMax(0) {}
 
 UnstackableItem::UnstackableItem(const string &_id, const string &_displayName, unsigned int _durability,
                                  unsigned int _durabilityMax) :
-        Item(_id, _displayName, false),
+        IItem(_id, _displayName, false),
         hasDurability(true),
         durability(_durability),
         durabilityMax(_durabilityMax) {}
 
 UnstackableItem::UnstackableItem(const UnstackableItem &other) :
-        Item(other.id, other.displayName, other.canPlace),
+        IItem(other.id, other.displayName, other.canPlace),
         hasDurability(other.hasDurability),
         durability(other.durability),
         durabilityMax(other.durabilityMax) {}
@@ -38,4 +38,14 @@ int UnstackableItem::addDurability(int _quantity) {
     int newDurability = this->durability + _quantity;
     this->durability = std::clamp<int>(newDurability, 0, this->durabilityMax);
     return newDurability;
+}
+
+string UnstackableItem::getTooltip() const {
+    string tooltip;
+    tooltip += this->displayName + "\n" + this->id + "\n";
+    if (this->hasDurability)
+        tooltip += "Durability: " +
+                   std::to_string(this->durability) + "/" +
+                   std::to_string(this->durabilityMax) + "\n";
+    return tooltip;
 }

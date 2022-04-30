@@ -5,9 +5,9 @@
 #ifndef MC_INVENTORY_MOCKUP_STACKABLEITEM_H
 #define MC_INVENTORY_MOCKUP_STACKABLEITEM_H
 
-#include "Item.h"
+#include "IItem.h"
 
-class StackableItem : public Item {
+class StackableItem : public IItem {
 protected:
     unsigned int maxStack;
 public:
@@ -19,6 +19,8 @@ public:
     StackableItem(const StackableItem &other);
 
     inline bool isStackable() const override { return true; }
+
+    string getTooltip() const override;
 };
 
 

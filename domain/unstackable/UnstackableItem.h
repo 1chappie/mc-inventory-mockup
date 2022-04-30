@@ -5,9 +5,9 @@
 #ifndef MC_INVENTORY_MOCKUP_UNSTACKABLEITEM_H
 #define MC_INVENTORY_MOCKUP_UNSTACKABLEITEM_H
 
-#include "Item.h"
+#include "IItem.h"
 
-class UnstackableItem : public Item {
+class UnstackableItem : public IItem {
 protected:
     bool hasDurability;
     unsigned int durability;
@@ -29,6 +29,8 @@ public:
     int addDurability(int _quantity);
 
     inline bool isStackable() const override { return false; }
+
+    string getTooltip() const override;
 
 };
 

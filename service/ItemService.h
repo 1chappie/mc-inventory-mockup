@@ -6,35 +6,33 @@
 #define MC_INVENTORY_MOCKUP_ITEMSERVICE_H
 
 #include "Repo.h"
-#include "../domain/Item.h"
-#include "../domain/Armour.h"
-#include "../domain/Weapon.h"
-#include "../domain/Consumable.h"
-#include "../domain/StackableItem.h"
-#include "../domain/UnstackableItem.h"
+#include "../domain/IItem.h"
+#include "unstackable/Armour.h"
+#include "unstackable/Weapon.h"
+#include "stackable/Consumable.h"
+#include "stackable/StackableItem.h"
+#include "unstackable/UnstackableItem.h"
 
 class ItemService {
-private:
-    Repo<Item *> repo;
-
-    void appendSlot(Item *item);
-
-    void updateSlot(Item *item);
-
-    void removeSlot(Item *item);
-
-public:
-    ItemService(Repo<Item *> _repo);
-
-    ItemService() = default;
-
-    void addItem(Item *item, unsigned int amount);
-
-    void removeItem(Item *item, unsigned int amount);
-
-    unsigned itemAmount(Item *item);
-
-    vector<Item *> getAll();
+//private:
+//    Repo repo;
+//
+//public:
+//    ItemService(const Repo &_repo);
+//
+//    ItemService() = default;
+//
+//    void add(IItem *item, unsigned int amount = 1);
+//
+//    void remove(IItem *item, unsigned int amount = 1);
+//
+//    pair<IItem *, unsigned int> *getLastRef(IItem *item);
+//
+//    unsigned int amount(IItem *item);
+//
+//    unsigned int amount();
+//
+//    vector<pair<IItem *, unsigned int>> *getAll();
 
 };
 

@@ -2,26 +2,26 @@
 // Created by chappie on 20.04.2022.
 //
 
-#include "Item.h"
+#include "IItem.h"
 
-string Item::getID() const {
+string IItem::getID() const {
     return this->id;
 }
 
-string Item::getDisplayName() const {
+string IItem::getDisplayName() const {
     return this->displayName;
 }
 
-Item::Item(const string &_id, const string &_displayName, const bool &_canPlace) {
+IItem::IItem(const string &_id, const string &_displayName, const bool &_canPlace) {
     this->id = _id;
     this->displayName = _displayName;
     this->canPlace = _canPlace;
 }
 
-Item::Item() {
+IItem::IItem() {
     this->id = "null";
 }
 
-bool Item::operator==(const Item &other) const {
+bool IItem::operator==(const IItem &other) const {
     return this->id == other.id;
 }

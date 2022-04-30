@@ -5,14 +5,14 @@
 #ifndef MC_INVENTORY_MOCKUP_CONSUMABLE_H
 #define MC_INVENTORY_MOCKUP_CONSUMABLE_H
 
+#include "StackableItem.h"
+#include <list>
+
 enum class Effects {
     HUNGER,
     REGENERATION,
     POISON
 };
-
-#include "StackableItem.h"
-#include <list>
 
 using std::list;
 

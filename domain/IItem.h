@@ -2,23 +2,23 @@
 // Created by chappie on 20.04.2022.
 //
 
-#ifndef MC_INVENTORY_MOCKUP_ITEM_H
-#define MC_INVENTORY_MOCKUP_ITEM_H
+#ifndef MC_INVENTORY_MOCKUP_IITEM_H
+#define MC_INVENTORY_MOCKUP_IITEM_H
 
 #include <string>
 
 using std::string;
 
-class Item {
+class IItem {
 protected:
     string id;
     string displayName;
     //TODO Image icon; for the UI
     bool canPlace;
 
-    Item(const string &_id, const string &_displayName, const bool &_canPlace);
+    IItem(const string &_id, const string &_displayName, const bool &_canPlace);
 
-    Item();
+    IItem();
 
 public:
 
@@ -26,11 +26,12 @@ public:
 
     string getDisplayName() const;
 
-    bool operator==(const Item &other) const;
+    bool operator==(const IItem &other) const;
 
     virtual bool isStackable() const = 0;
 
+    virtual string getTooltip() const = 0;
 };
 
 
-#endif //MC_INVENTORY_MOCKUP_ITEM_H
+#endif //MC_INVENTORY_MOCKUP_IITEM_H

@@ -5,6 +5,10 @@
 #ifndef MC_INVENTORY_MOCKUP_ARMOUR_H
 #define MC_INVENTORY_MOCKUP_ARMOUR_H
 
+#include "UnstackableItem.h"
+#include <list>
+#include <map>
+
 enum class aEnchantments {
     PROTECTION,
     FIRE_PROTECTION,
@@ -16,9 +20,6 @@ enum class aEnchantments {
     THORNS,
     DEPTH_STRIDER
 };
-
-#include "UnstackableItem.h"
-#include <list>
 
 class ArmourBuilder;
 
@@ -38,6 +39,8 @@ public:
     std::list<aEnchantments> getEnchantments() const;
 
     int use();
+
+    string getTooltip() const override;
 
 private:
     Armour() = default;
