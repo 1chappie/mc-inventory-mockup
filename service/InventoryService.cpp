@@ -84,4 +84,18 @@ unsigned int InventoryService::hGive_normalize_surplus(StackableItem *item, unsi
     return amount;
 }
 
+void InventoryService::clear(IItem *item, unsigned int amount) {
+    while (amount && this->getLastRef(item)) {
+        unsigned int to_clear = std::min(amount, this->getLastRef(item)->second);
+        this->getLastRef(item)->second -= to_clear;
+        amount -= to_clear;
+        if (this->getLastRef(item)->second == 0)
+            this->repo->popSlot(item);
+    }
+}
+
+void InventoryService::clear() {
+    this->repo->slots.clear();
+}
+
 

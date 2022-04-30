@@ -41,12 +41,14 @@ int main() {
     invRepo.addSlot(&steak, 10);
     invRepo.addSlot(&DiamondArmour, 1);
     invRepo.addSlot(&DiamondSword, 1);
+    std::cout << "Initial Inventory" << std::endl;
     for (auto &i: invRepo.getAll())
         std::cout << i.second << " " << i.first->getDisplayName() << std::endl;
+    std::cout << std::endl;
 
     Armour DiamondArmour2 = Armour::build()
-            .withID("diamond_armouvr")
-            .withDisplayName("Diamond Armour")
+            .withID("gold_armour")
+            .withDisplayName("Gold Armour")
             .withDurabilityMax(100)
             .withDurability(140)
             .withProtectionLevel(6)
@@ -61,6 +63,23 @@ int main() {
 
     invService.give(&steak, 40);
 
+    std::cout << "After giving 40 steak" << std::endl;
+    for (auto &i: invRepo.getAll())
+        std::cout << i.second << " " << i.first->getDisplayName() << std::endl;
+    std::cout << std::endl;
+
+    invService.clear(&steak, 100);
+    invService.give(&DiamondArmour2, 3);
+    invService.clear(&DiamondArmour2);
+
+    std::cout << "After clearing 100 steak" << std::endl;
+    for (auto &i: invRepo.getAll())
+        std::cout << i.second << " " << i.first->getDisplayName() << std::endl;
+    std::cout << std::endl;
+
+    invService.clear();
+
+    std::cout << "After clearing" << std::endl;
     for (auto &i: invRepo.getAll())
         std::cout << i.second << " " << i.first->getDisplayName() << std::endl;
 
