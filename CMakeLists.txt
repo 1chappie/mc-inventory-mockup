@@ -18,8 +18,8 @@ add_executable(mc_inventory_mockup
         domain/IItem.h
         domain/stackable/StackableItem.cpp
         domain/stackable/StackableItem.h
-        service/ItemService.cpp
-        service/ItemService.h
+        service/InventoryService.cpp
+        service/InventoryService.h
         domain/unstackable/UnstackableItem.cpp
         domain/unstackable/UnstackableItem.h
         domain/stackable/Consumable.cpp
@@ -29,4 +29,6 @@ add_executable(mc_inventory_mockup
         domain/unstackable/Armour.h
         domain/unstackable/Weapon.cpp
         domain/unstackable/Weapon.h
-        persistence/Repo.cpp)
+        persistence/Repo.cpp
+        service/EnchantmentService.cpp
+        service/EnchantmentService.h)
