@@ -1,0 +1,46 @@
+[IItem]^--.-[StackableItem]
+
+[<<Interface>>;IItem|#id: string;#displayName: string;#canPlace: bool| +getID(): string; +getDisplayName(): string; +isStackable(): bool; +getTooltip(): string]
+
+[StackableItem| #maxStack: uint| +StackableItem(string,string,uint,bool);+getMaxStack(): uint; +isStackable(): bool ; +getTooltip(): string ]
+
+[StackableItem]^-[Consumable]
+
+[Consumable|#saturation: int;#effects: list| +Consumable(Consumable);+getSaturation(): int;+getEffects(): list; +build(): ConsumableBuilder]
+
+[Consumable]<>-[ConsumableBuilder]
+
+[ConsumableBuilder|-b_consumable: Consumable| ...]
+
+[UnstackableItem| #hasDurability: bool; #durability: uint; #durabilityMax: uint| +UnstackableItem(string,string); +UnstackableItem(string,string,uint,uint);+getDurabilityMax(): uint; +setDurability(uint): uint; +addDurability(int): int ;+isStackable(): bool; +getTooltip(): string ; +equipmentType(): string]
+
+[IItem]^--.-[UnstackableItem]
+
+[Weapon| #damage: uint; #enchantments: list|+Weapon(Weapon); +getDamage(): uint;+getEnchantments(): list; +use(): int; +getTooltip(): string; +equiptmentType(): string; +build(): WeaponBuilder]
+
+[UnstackableItem]^-[Weapon]
+
+[WeaponBuilder| -b_weapon: Weapon|...]
+
+[Weapon]<>-[WeaponBuilder]
+
+[Armour|#protectionLevel: uint;#enchantments: list|+Armour(Armour); +getProtectionLevel(): uint; +getEnchantments(): list; +use(): int; +getTooltip(): string; +equiptmentType(): string; +build(): ArmourBuilder]
+
+[UnstackableItem]^[Armour]
+
+[ArmourBuilder| -b_armour: Armour|...]
+
+[Armour]<>-[ArmourBuilder]
+
+[Repo|#slots: vector(IItem*, uint)| +Repo(); +Repo(Repo); +addSlot(IItem*, uint); +updateSlot(IItem*, uint); +updateSlotAt(uint, IItem*, uint); +popSlot(IItem*); +popSlotAt(uint); +lastSlotWhere(IItem*): &(IItem*, uint); +firstSlotWhere(IItem*): &(IItem*, uint); +slotAt(uint): &(IItem*, uint); +getAll(): vector(IItem*, uint); +size(): int]
+
+[Repo]->[IItem]
+
+[InventoryService|-Repo*: repo; -hGive_fill_preceding(StackableItem,uint) :uint; +hGive_normalize_surplus(StackableItem, uint): uint| +InventoryService(&Repo); +getLastRef(IItem*): (IItem*,uint); +getLastRef(string): (IItem*,uint); +getFirstRef(IItem*): (IItem*,uint); +getFirstRef(string): (IItem*,uint); +total(IItem*): uint; +total(): uint; +getAll(): vector(IItem*, uint); +give(IItem*,uint); +clear(IItem*,uint); +clear()]
+
+[InventoryService]->[Repo]
+
+[EnchantmentService||+enchant(Armour*);+enchant(Weapon*)]
+
+[Weapon]->[EnchantmentService]
+[Armour]->[EnchantmentService]

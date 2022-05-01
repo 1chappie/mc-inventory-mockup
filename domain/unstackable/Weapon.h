@@ -39,6 +39,8 @@ public:
 
     string getTooltip() const override;
 
+    string equipmentType() const { return "weapon"; }
+
 private:
     Weapon() = default;
 };
