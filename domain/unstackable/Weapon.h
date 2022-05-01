@@ -63,6 +63,8 @@ public:
 
     operator Weapon &&();
 
+    string equipmentType() const { return "weapon"; }
+
 };
 
 #endif //MC_INVENTORY_MOCKUP_WEAPON_H

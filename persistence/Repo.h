@@ -7,7 +7,7 @@
 
 #include <vector>
 #include <algorithm>
-#include "../exceptions/RepoException.h"
+#include "../exceptions/RepoException.hpp"
 #include <utility>
 #include "../domain/IItem.h"
 

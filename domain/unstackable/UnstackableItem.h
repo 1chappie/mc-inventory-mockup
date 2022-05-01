@@ -32,6 +32,8 @@ public:
 
     string getTooltip() const override;
 
+    string equipmentType() const { return "none"; }
+
 };
 
 

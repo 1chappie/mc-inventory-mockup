@@ -44,6 +44,8 @@ public:
 
     string getTooltip() const override;
 
+    string equipmentType() const { return "armour"; }
+
 private:
     Armour() = default;
 };

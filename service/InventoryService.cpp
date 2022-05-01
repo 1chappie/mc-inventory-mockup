@@ -16,9 +16,29 @@ pair<IItem *, unsigned int> *InventoryService::getLastRef(IItem *item) {
     }
 }
 
+pair<IItem *, unsigned int> *InventoryService::getLastRef(std::string id) {
+    StackableItem dummy = StackableItem(id, "dummy");
+    try {
+        return &this->repo->lastSlotWhere(dynamic_cast<IItem *>(&dummy));
+    }
+    catch (RepoException &e) {
+        return nullptr;
+    }
+}
+
 pair<IItem *, unsigned int> *InventoryService::getFirstRef(IItem *item) {
     try {
         return &this->repo->firstSlotWhere(item);
+    }
+    catch (RepoException &e) {
+        return nullptr;
+    }
+}
+
+pair<IItem *, unsigned int> *InventoryService::getFirstRef(std::string id) {
+    StackableItem dummy = StackableItem(id, "dummy");
+    try {
+        return &this->repo->firstSlotWhere(dynamic_cast<IItem *>(&dummy));
     }
     catch (RepoException &e) {
         return nullptr;

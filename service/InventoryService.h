@@ -12,6 +12,7 @@
 #include "stackable/Consumable.h"
 #include "stackable/StackableItem.h"
 #include "unstackable/UnstackableItem.h"
+#include <string>
 
 class InventoryService {
 private:
@@ -23,13 +24,19 @@ private:
 
 
 public:
+    friend class CLI;
+
     InventoryService(Repo &_repo);
 
     InventoryService() = delete;
 
     pair<IItem *, unsigned int> *getLastRef(IItem *item);
 
+    pair<IItem *, unsigned int> *getLastRef(std::string);
+
     pair<IItem *, unsigned int> *getFirstRef(IItem *item);
+
+    pair<IItem *, unsigned int> *getFirstRef(std::string);
 
     unsigned int total(IItem *item);
 
