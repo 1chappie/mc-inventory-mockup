@@ -65,20 +65,29 @@ unsigned int InventoryService::total() {
 }
 
 vector<pair<IItem *, unsigned int>> InventoryService::getAll() {
-    //only a copy of the vector is returned
+    // Only a copy of the vector is returned
     return this->repo->slots;
 }
 
 void InventoryService::give(IItem *item, unsigned int amount) {
     if (amount == 0) return;
     if (item->isStackable()) {
+        // First, if the item already exists somewhere in the inventory,
+        // try filling the available slots
         if (this->total(item))
+            // The store the amount that remained
             amount = this->hGive_fill_preceding(dynamic_cast<StackableItem *>(item), amount);
+        // If the amount that remained is bigger than the max stack size,
+        // create new slots with full stacks until less than a full stack remains
         if (amount > dynamic_cast<StackableItem *>(item)->getMaxStack())
+            // And store the new amount again
             amount = this->hGive_normalize_surplus(dynamic_cast<StackableItem *>(item), amount);
+        // And now finally, if anything's left after those two functions,
+        // create a new slot with the remaining amount
         if (amount)
             this->repo->addSlot(item, amount);
     } else {
+        // If the item is not stackable, just create a new slot for each item added
         while (amount--)
             this->repo->addSlot(item, 1);
     }

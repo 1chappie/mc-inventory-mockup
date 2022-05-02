@@ -18,6 +18,8 @@ IItem::IItem(const string &_id, const string &_displayName, const bool &_canPlac
     this->canPlace = _canPlace;
 }
 
+// I made this to fix something, but I can't remember what it was,
+// so I'll leave it here
 IItem::IItem() {
     this->id = "null";
 }

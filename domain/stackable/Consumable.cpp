@@ -43,6 +43,8 @@ ConsumableBuilder &ConsumableBuilder::withEffects(list<Effects> effects) {
     return *this;
 }
 
+// I decided to use builder pattern for Consumable, Armour and Weapon
+// because the constructors were getting too long
 ConsumableBuilder::operator Consumable &&() {
     return std::move(this->b_consumable);
 }

@@ -57,6 +57,9 @@ void CLI::domainManager() {
 }
 
 void CLI::hdM_domainWizard() {
+    // This is both very long-winded and annoying to read and write,
+    // hopefully I'll either make everything with a GUI from now on
+    // or learn a better way to do these.
     std::cout << "\n### DOMAIN ITEM WIZARD - create new item types\n\n";
     std::cout << "Item name:";
     std::string name;
@@ -64,6 +67,9 @@ void CLI::hdM_domainWizard() {
     std::cout << "Item ID:";
     std::string id;
     std::cin >> id;
+    // I won't be making 20 additional functions just to manipulate
+    // the domain. I would've had to make a service too if that were the case,
+    // but I'd rather just get it done than spend time doing that.
     if (std::find_if(this->domain.begin(), this->domain.end(),
                      [id](IItem *item) {
                          return item->getID() == id;
@@ -155,7 +161,7 @@ void CLI::hdM_domainWizard() {
                 else hasDurability = false;
                 if (hasDurability) {
                     std::cout.flush();
-                    std::cout << "Max durability:"; //????????????????????????????????????????
+                    std::cout << "Max durability:";
                     std::cin >> durabilityMax;
                     std::cout << "Current durability:";
                     std::cin >> durabilityCurrent;
@@ -185,6 +191,7 @@ void CLI::hdM_delete(std::string id) {
 void CLI::commandParser(std::string command) {
     std::istringstream iss(command);
     std::string commandName, arg1, arg2;
+    // Anything after the 3rd word is ignored
     iss >> commandName >> arg1 >> arg2;
     if (commandName == "give")
         this->hcP_giveCommand(arg1, arg2);
@@ -203,9 +210,11 @@ void CLI::commandParser(std::string command) {
 }
 
 void CLI::hcP_giveCommand(std::string id, std::string amount) {
+    // First verifying if the item exists
     auto it = std::find_if(this->domain.begin(), this->domain.end(), [&id](IItem *item) {
         return item->getID() == id;
     });
+    // And then storing it
     auto item = this->domain[std::distance(this->domain.begin(), it)];
     if (it == this->domain.end()) {
         std::cout << "Invalid item. Check \"domain\" for available item types.\n\n";
@@ -230,6 +239,7 @@ void CLI::hcP_clearCommand(std::string id, std::string amount) {
         this->invServ->clear();
         return;
     }
+    // But now that I really think about it, a service would've been better. Maybe next time
     auto it = std::find_if(this->domain.begin(), this->domain.end(), [&id](IItem *item) {
         return item->getID() == id;
     });
