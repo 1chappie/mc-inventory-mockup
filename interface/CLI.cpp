@@ -190,33 +190,16 @@ void CLI::commandParser(std::string command) {
         this->hcP_giveCommand(arg1, arg2);
     else if (commandName == "clear")
         this->hcP_clearCommand(arg1, arg2);
-    else if (commandName == "enchant")
-        this->hcP_enchantCommand(arg1);
     else if (commandName == "domain")
         this->domainManager();
     else if (commandName == "focus")
-        this->hcP_focusCommand(arg1);
+        this->itemFocus(arg1);
     else if (commandName == "help")
         this->hcP_printHelp();
     else if (commandName == "quit" || commandName == "q" || commandName == "exit")
         exit(0);
     else
         std::cout << "Unknown command. Type \"help\" for help.\n";
-}
-
-void CLI::hcP_enchantCommand(std::string id) {
-    try {
-        string eqpType = dynamic_cast<UnstackableItem *>(this->invServ->getLastRef(id)->first)->equipmentType();
-        if (eqpType == "armour") {
-            EnchantmentService::enchant(dynamic_cast<Armour *>(this->invServ->getLastRef(id)->first));
-        } else if (eqpType == "weapon") {
-            EnchantmentService::enchant(dynamic_cast<Weapon *>(this->invServ->getLastRef(id)->first));
-        } else {
-            std::cout << "Item cannot be enchanted\n";
-        }
-    } catch (EnchantException e) {
-        std::cout << e.what() << std::endl;
-    }
 }
 
 void CLI::hcP_giveCommand(std::string id, std::string amount) {
@@ -268,7 +251,7 @@ void CLI::hcP_clearCommand(std::string id, std::string amount) {
     }
 }
 
-void CLI::hcP_focusCommand(std::string index) {
+void CLI::itemFocus(std::string index) {
     try {
         unsigned int i = stoi(index);
         auto ref = this->invServ->repo->slotAt(i);
@@ -278,11 +261,20 @@ void CLI::hcP_focusCommand(std::string index) {
             std::cout << "Items in slot: " << ref.second << "\n";
             std::cout << "Items in inventory: " << this->invServ->total(ref.first) << "\n";
             std::cout << std::endl;
-            std::cout << " d: clear slot    q: back \n\n";
+            if (ref.first->isEnchantable())
+                std::cout << " e: enchant    d: clear slot    q: back \n\n";
+            else
+                std::cout << " d: clear slot    q: back \n\n";
             std::cout << ">> ";
             std::string option;
             std::cin >> option;
             switch (option[0]) {
+                case 'e':
+                    if (ref.first->isEnchantable())
+                        this->hiF_enchant(i);
+                    else
+                        std::cout << "Invalid option\n";
+                    break;
                 case 'd':
                     std::cout << "Slot cleared\n\n";
                     this->invServ->repo->popSlotAt(i);
@@ -306,15 +298,36 @@ void CLI::hcP_focusCommand(std::string index) {
 
 }
 
+void CLI::hiF_enchant(unsigned int index) {
+    try {
+        string eqpType = dynamic_cast<UnstackableItem *>(this->invServ->getAll()[index].first)->equipmentType();
+        if (eqpType == "armour") {
+            EnchantmentService::enchant(dynamic_cast<Armour *>(this->invServ->getAll()[index].first));
+            std::cout << "Armour enchanted\n";
+        } else if (eqpType == "weapon") {
+            EnchantmentService::enchant(dynamic_cast<Weapon *>(this->invServ->getAll()[index].first));
+            std::cout << "Weapon enchanted\n";
+        } else {
+            std::cout << "Item cannot be enchanted\n";
+        }
+    } catch (EnchantException e) {
+        std::cout << e.what() << std::endl;
+    }
+    std::cout << std::endl;
+}
+
+
 void CLI::hcP_printHelp() {
     std::ostringstream oss;
     oss << "List of available commands:\n";
     oss << ">>give <id> [amount] - add item to the inventory\n"
         << ">>clear <id> [amount] - clear item from the inventory\n"
         << ">>clear - clear all items\n"
-        << ">>enchant <id> - randomly enchant an item (Weapon or Armour)\n"
-        << ">>focus <slot-index> - details about a specific inventory slot\n"
-        << ">>domain - manage available item types\n"
+        << ">>focus <slot-index> - SUBMENU\n"
+        << "  details about a specific inventory slot/ item, \n"
+        << "  also allows you to enchant items (if the option is available)\n"
+        << ">>domain - SUBMENU\n"
+        << "  manage available item types\n"
         << ">>help - this menu\n"
         << ">>quit - close the app\n\n";
     std::cout << oss.str();

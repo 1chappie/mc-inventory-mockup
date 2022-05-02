@@ -29,9 +29,8 @@ unsigned int UnstackableItem::getDurability() const {
     return this->durability;
 }
 
-unsigned int UnstackableItem::setDurability(unsigned int _quantity) {
+void UnstackableItem::setDurability(unsigned int _quantity) {
     this->durability = _quantity;
-    return this->durability;
 }
 
 int UnstackableItem::addDurability(int _quantity) {

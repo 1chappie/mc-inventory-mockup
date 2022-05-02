@@ -25,12 +25,37 @@ protected:
 public:
     friend class ConsumableBuilder;
 
+    /**
+     * Builder for consumable items. Static function that creates a consumable.
+     * @example
+     * <code>
+     * Consumable apple = Consumable::build()<br>
+     *              .withID("apple")<br>
+     *              .withDisplayName("Apple")<br>
+     *              .withMaxStack(64)<br>
+     *              .withSaturation(5)<br>
+     *              .withEffects(list\<Effects\>{Effects::REGENERATION});
+     * </code>
+     * @return ConsumableBuilder, which can be converted to Consumable
+     */
     static ConsumableBuilder build();
 
+    /**
+     * Copy constructor
+     * @param _other Another instance of a consumable.
+     */
     Consumable(const Consumable &_other);
 
+    /**
+     * Gets the saturation of the consumable.
+     * @return Saturation.
+     */
     int getSaturation() const;
 
+    /**
+     * Get a list of the effects of the consumable.
+     * @return list\<Effects\>
+     */
     list<Effects> getEffects() const;
 
 private:
@@ -53,6 +78,7 @@ public:
 
     ConsumableBuilder &withEffects(list<Effects> effects);
 
+    //this defines the behaviour of the Consumable copy constructor in relation to the builder
     operator Consumable &&();
 
 };

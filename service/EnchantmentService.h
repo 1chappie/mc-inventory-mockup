@@ -11,9 +11,20 @@
 
 class EnchantmentService {
 public:
-    static void enchant(Armour *);
 
-    static void enchant(Weapon *);
+    /**
+     * Give a random aEnnchantment to an armour item.
+     * @param _armour Reference to Armour item.
+     * @throws EnchantException if 5 enchantments are exceeded.
+     */
+    static void enchant(Armour *_armour);
+
+    /**
+     * Give a random wEnnchantment to a weapon.
+     * @param weapon Reference to Weapon item.
+     * @throws EnchantException if 5 enchantments are exceeded.
+     */
+    static void enchant(Weapon *_weapon);
 };
 
 

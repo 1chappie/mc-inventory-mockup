@@ -22,7 +22,6 @@ void Repo::updateSlot(IItem *_item, unsigned int _qty) {
         throw RepoException("Item not found.\n");
     if (!_qty) _qty = this->slots[std::distance(this->slots.begin(), it.base() - 1)].second;
     this->slots[std::distance(this->slots.begin(), it.base() - 1)] = make_pair(_item, _qty);
-    //TODO test if it's finding the right item, so the last one
 }
 
 void Repo::updateSlotAt(unsigned int _ind, IItem *_item, unsigned int _qty) {
@@ -72,6 +71,6 @@ vector<pair<struct IItem *, unsigned int>> &Repo::getAll() {
     return this->slots;
 }
 
-int Repo::size() {
+unsigned int Repo::size() {
     return this->slots.size();
 }

@@ -27,19 +27,51 @@ public:
 
     friend class WeaponBuilder;
 
+    /**
+     * Builder for weapons. Static function that creates a weapon.
+     * @example
+     * <code>
+     * Weapon DiamondSword = Weapon::build()<br>
+     *              .withID("diamond_sword")<br>
+     *              .withDisplayName("Diamond Sword")<br>
+     *              .withDurabilityMax(200)<br>
+     *              .withDurability(140)<br>
+     *              .withDamage(7)<br>
+     *              .withEnchantments(list\<wEnchantments\>{wEnchantments::SHARPNESS, wEnchantments::FIRE_ASPECT});<br>
+     * </code>
+     * @return WeaponBuilder, which can be converted to Weapon
+     */
     static WeaponBuilder build();
 
+    /**
+     * Copy constructor
+     * @param _other Weapon instance to copy
+     */
     Weapon(const Weapon &other);
 
+    /**
+     * Get the damage of the weapon
+     * @return damage
+     */
     unsigned int getDamage() const;
 
+    /**
+     * Get the enchantments of the weapon
+     * @return list\<wEnchantments\>
+     */
     std::list<wEnchantments> getEnchantments() const;
 
+    /**
+     * Wear the weapon by one point (durability--)
+     * @return new durability
+     */
     int use();
 
     string getTooltip() const override;
 
-    string equipmentType() const { return "weapon"; }
+    string equipmentType() const override { return "weapon"; }
+
+    bool isEnchantable() const override { return true; }
 
 private:
     Weapon() = default;
@@ -63,9 +95,8 @@ public:
 
     WeaponBuilder &withEnchantments(std::list<wEnchantments> _enchantment);
 
+    //this defines the behaviour of the Armour copy constructor in relation to the builder
     operator Weapon &&();
-
-    string equipmentType() const { return "weapon"; }
 
 };
 
