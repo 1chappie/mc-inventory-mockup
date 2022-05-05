@@ -310,7 +310,8 @@ void CLI::itemFocus(std::string index) {
 
 void CLI::hiF_enchant(unsigned int index) {
     try {
-        string eqpType = dynamic_cast<UnstackableItem *>(this->invServ->getAll()[index].first)->equipmentType();
+        //TODO sometimes an empty enchant is applied for some reason, probably the randomness
+        string eqpType = dynamic_cast<UnstackableItem *>(this->invServ->getAll()[index].first)->itemType();
         if (eqpType == "armour") {
             EnchantmentService::enchant(dynamic_cast<Armour *>(this->invServ->getAll()[index].first));
             std::cout << "Armour enchanted\n";

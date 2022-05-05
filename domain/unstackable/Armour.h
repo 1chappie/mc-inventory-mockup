@@ -74,7 +74,7 @@ public:
 
     string getTooltip() const override;
 
-    string equipmentType() const override { return "armour"; }
+    string itemType() const override { return "armour"; }
 
     bool isEnchantable() const override { return true; }
 

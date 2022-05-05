@@ -68,7 +68,7 @@ public:
      * Returns the equipment type.
      * @return "armour" / "weapon" / "none" for non-equippable (string)
      */
-    virtual string equipmentType() const { return "none"; }
+    string itemType() const override { return "unstackable-item"; }
 
 };
 

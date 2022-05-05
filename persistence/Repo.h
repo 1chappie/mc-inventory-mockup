@@ -17,6 +17,7 @@ using std::pair, std::make_pair;
 class Repo {
 protected:
     vector<pair<IItem *, unsigned int>> slots;
+    std::string filePath;
 
 public:
     friend class InventoryService;
@@ -42,7 +43,7 @@ public:
      * @param _item The item to be added
      * @param _qty The quantity of the item to be added
      */
-    virtual void addSlot(IItem * _item, unsigned int _qty);
+    virtual void addSlot(IItem *_item, unsigned int _qty);
 
     /**
      * Find the slot of the last occurrence of an item by ID and replace it.
@@ -50,7 +51,7 @@ public:
      * @param _qty New quantity in slot. By default, quantity remains unchanged.
      * @throws RepoException if the item is not found
      */
-    virtual void updateSlot(IItem * _item, unsigned int _qty = 0);
+    virtual void updateSlot(IItem *_item, unsigned int _qty = 0);
 
     /**
      * Replaces the slot at slots[_index] with a new pair of item and quantity.
@@ -59,14 +60,14 @@ public:
      * @param _qty New quantity in slot. By default, quantity remains unchanged.
      * @throws RepoException if the index is out of bounds
      */
-    virtual void updateSlotAt(unsigned int _index, IItem * _item, unsigned int _qty = 0);
+    virtual void updateSlotAt(unsigned int _index, IItem *_item, unsigned int _qty = 0);
 
     /**
      * Removes the slot of the last occurrence of an item.
      * @param _item Item
      * @throws RepoException if the item is not found
      */
-    virtual void popSlot(IItem * _item);
+    virtual void popSlot(IItem *_item);
 
     /**
      * Removes the slot at slots[_index].
@@ -81,7 +82,7 @@ public:
      * @return *pair\<IItem * _item, unsigned int _qty\>
      * @throws RepoException if the item is not found
      */
-    virtual pair<IItem *, unsigned int> &lastSlotWhere(IItem * _item);
+    virtual pair<IItem *, unsigned int> &lastSlotWhere(IItem *_item);
 
     /**
      * Return reference to the first slot where the specified item is found.
@@ -89,7 +90,7 @@ public:
      * @return *pair\<IItem * _item, unsigned int _qty\>
      * @throws RepoException if the item is not found
      */
-    virtual pair<IItem *, unsigned int> &firstSlotWhere(IItem * _item);
+    virtual pair<IItem *, unsigned int> &firstSlotWhere(IItem *_item);
 
     /**
      * Return reference to the slot at the specified index.

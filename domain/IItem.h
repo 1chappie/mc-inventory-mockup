@@ -53,6 +53,8 @@ public:
      * @return string of description
      */
     virtual string getTooltip() const = 0;
+
+    virtual string itemType() const = 0;
 };
 
 

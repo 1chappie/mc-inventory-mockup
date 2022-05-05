@@ -31,13 +31,15 @@ public:
 
     /**
      * Get the maximum stack size of the item.
-     * @return Maxiumum stack size uint.
+     * @return Maximum stack size uint.
      */
     unsigned int getMaxStack() const;
 
     inline bool isStackable() const override { return true; }
 
     string getTooltip() const override;
+
+    string itemType() const override { return "stackable-item"; }
 };
 
 

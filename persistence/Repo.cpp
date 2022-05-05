@@ -3,6 +3,7 @@
 //
 #include "Repo.h"
 #include <iostream>
+#include <fstream>
 
 Repo::Repo() : slots(vector<pair<IItem *, unsigned int>>()) {}
 

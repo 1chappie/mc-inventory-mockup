@@ -58,6 +58,8 @@ public:
      */
     list<Effects> getEffects() const;
 
+    string itemType() const override { return "consumable"; }
+
 private:
     Consumable() = default;
 };

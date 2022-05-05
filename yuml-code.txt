@@ -12,7 +12,7 @@
 
 [ConsumableBuilder|-b_consumable: Consumable| ...]
 
-[UnstackableItem| #hasDurability: bool; #durability: uint; #durabilityMax: uint| +UnstackableItem(string,string); +UnstackableItem(string,string,uint,uint);+getDurabilityMax(): uint; +setDurability(uint): uint; +addDurability(int): int ;+isStackable(): bool; +getTooltip(): string ; +equipmentType(): string]
+[UnstackableItem| #hasDurability: bool; #durability: uint; #durabilityMax: uint| +UnstackableItem(string,string); +UnstackableItem(string,string,uint,uint);+getDurabilityMax(): uint; +setDurability(uint): uint; +addDurability(int): int ;+isStackable(): bool; +getTooltip(): string ; +itemType(): string]
 
 [IItem]^--.-[UnstackableItem]
 

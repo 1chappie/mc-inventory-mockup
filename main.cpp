@@ -9,6 +9,7 @@
 #include "InventoryService.h"
 #include "EnchantmentService.h"
 #include "interface/CLI.h"
+#include "FileService.h"
 
 int main() {
 
@@ -80,5 +81,8 @@ int main() {
             vector<IItem *>{&steak, &DiamondArmour, &DiamondSword, &GoldArmour, &EnderPearl, &OakWood, &Bed});
 
     cli.run();
+
+    FileService fs(inventory);
+    fs.load("test.csv");
 
 }
