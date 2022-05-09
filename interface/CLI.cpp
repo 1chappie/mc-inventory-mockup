@@ -20,7 +20,7 @@ void CLI::printInventory() {
 
 void CLI::hdM_printDomain() {
     std::ostringstream oss;
-    for (auto &i: this->domain) {
+    for (auto &i: this->invServ->repo->domain.getAll()) {
         oss << std::endl << std::setw(20) << "[" + i->getID() + "] ";
         oss << "\"" << i->getDisplayName() << "\"";
         if (i->isStackable()) oss << " (stackable)";
@@ -67,13 +67,7 @@ void CLI::hdM_domainWizard() {
     std::cout << "Item ID:";
     std::string id;
     std::cin >> id;
-    // I won't be making 20 additional functions just to manipulate
-    // the domain. I would've had to make a service too if that were the case,
-    // but I'd rather just get it done than spend time doing that.
-    if (std::find_if(this->domain.begin(), this->domain.end(),
-                     [id](IItem *item) {
-                         return item->getID() == id;
-                     }) != this->domain.end()) {
+    if (this->invServ->repo->domain.get(id) != nullptr) {
         std::cout << "Item with ID \"" << id << "\" already exists! \n";
         return;
     }
@@ -102,7 +96,7 @@ void CLI::hdM_domainWizard() {
                     .withMaxStack(stackSize)
                     .withSaturation(saturation)
                     .withEffects(std::list<Effects>());
-            this->domain.push_back(dynamic_cast<IItem *>(&newConsumable));
+            this->invServ->repo->domain.write(dynamic_cast<IItem *>(&newConsumable));
         } else {
             bool canPlace;
             std::cout << "Can be placed? (y/n) ";
@@ -110,7 +104,7 @@ void CLI::hdM_domainWizard() {
             if (input == "y" || input == "n") canPlace = true;
             else canPlace = false;
             static StackableItem newStackable = StackableItem(id, name, stackSize, canPlace);
-            this->domain.push_back(dynamic_cast<IItem *>(&newStackable));
+            this->invServ->repo->domain.write(dynamic_cast<IItem *>(&newStackable));
         }
     } else {
         std::cout << "Armour/ weapon/ none of these? (a/w/n):";
@@ -134,7 +128,7 @@ void CLI::hdM_domainWizard() {
                         .withDurability(durabilityCurrent)
                         .withProtectionLevel(protection)
                         .withEnchantments(std::list<aEnchantments>());
-                this->domain.push_back(dynamic_cast<IItem *>(&newArmour));
+                this->invServ->repo->domain.write(dynamic_cast<IItem *>(&newArmour));
                 break;
             case 'w':
                 std::cout << "Max durability:";
@@ -151,7 +145,7 @@ void CLI::hdM_domainWizard() {
                         .withDurability(durabilityCurrent)
                         .withDamage(damage)
                         .withEnchantments(std::list<wEnchantments>());
-                this->domain.push_back(dynamic_cast<IItem *>(&newWeapon));
+                this->invServ->repo->domain.write(dynamic_cast<IItem *>(&newWeapon));
                 break;
             default:
                 std::cout << "Has durability? (y/n):";
@@ -166,10 +160,10 @@ void CLI::hdM_domainWizard() {
                     std::cout << "Current durability:";
                     std::cin >> durabilityCurrent;
                     static UnstackableItem newUnstackable = UnstackableItem(id, name, durabilityCurrent, durabilityMax);
-                    this->domain.push_back(dynamic_cast<IItem *>(&newUnstackable));
+                    this->invServ->repo->domain.write(dynamic_cast<IItem *>(&newUnstackable));
                 } else {
                     static UnstackableItem newUnstackable = UnstackableItem(id, name);
-                    this->domain.push_back(dynamic_cast<IItem *>(&newUnstackable));
+                    this->invServ->repo->domain.write(dynamic_cast<IItem *>(&newUnstackable));
                 }
                 break;
         }
@@ -178,14 +172,10 @@ void CLI::hdM_domainWizard() {
 }
 
 void CLI::hdM_delete(std::string id) {
-    for (auto it = this->domain.begin(); it != this->domain.end(); it++) {
-        if ((*it)->getID() == id) {
-            this->domain.erase(it);
-            std::cout << "Item deleted!\n\n";
-            return;
-        }
-    }
-    std::cout << "Item not found!\n\n";
+    if (this->invServ->repo->domain.deleteItem(id))
+        std::cout << "Item deleted!\n\n";
+    else
+        std::cout << "Item not found!\n\n";
 }
 
 void CLI::commandParser(std::string command) {
@@ -210,23 +200,18 @@ void CLI::commandParser(std::string command) {
 }
 
 void CLI::hcP_giveCommand(std::string id, std::string amount) {
-    // First verifying if the item exists
-    auto it = std::find_if(this->domain.begin(), this->domain.end(), [&id](IItem *item) {
-        return item->getID() == id;
-    });
-    // And then storing it
-    auto item = this->domain[std::distance(this->domain.begin(), it)];
-    if (it == this->domain.end()) {
+    auto item = this->invServ->repo->domain.get(id);
+    if (!item) {
         std::cout << "Invalid item. Check \"domain\" for available item types.\n\n";
     } else {
         try {
             int amt;
-            if (amount == "") amt = 1;
+            if (amount.empty()) amt = 1;
             else amt = std::stoi(amount);
             if (amt <= 0) throw std::invalid_argument("Invalid amount");
             this->invServ->give(item, amt);
             std::cout << "Given [" << item->getDisplayName() << "] x " << amt << " to Steve\n\n";
-        } catch (std::invalid_argument e) {
+        } catch (std::invalid_argument &e) {
             std::cout << "Invalid amount\n\n";
             return;
         }
@@ -234,27 +219,23 @@ void CLI::hcP_giveCommand(std::string id, std::string amount) {
 }
 
 void CLI::hcP_clearCommand(std::string id, std::string amount) {
-    if (id == "") {
+    if (id.empty()) {
         std::cout << "Cleared the inventory of Steve, removing " << this->invServ->total() << " items\n\n";
         this->invServ->clear();
         return;
     }
-    // But now that I really think about it, a service would've been better. Maybe next time
-    auto it = std::find_if(this->domain.begin(), this->domain.end(), [&id](IItem *item) {
-        return item->getID() == id;
-    });
-    auto item = this->domain[std::distance(this->domain.begin(), it)];
-    if (it == this->domain.end()) {
+    auto item = this->invServ->repo->domain.get(id);
+    if (!item) {
         std::cout << "Invalid item. Check \"domain\" for available item types.\n\n";
     } else {
         try {
             int amt;
-            if (amount == "") amt = 1;
+            if (amount.empty()) amt = 1;
             else amt = std::stoi(amount);
             if (amt <= 0) throw std::invalid_argument("Invalid amount");
             this->invServ->clear(item, amt);
             std::cout << "Cleared [" << item->getDisplayName() << "] x " << amt << " from Steve\n\n";
-        } catch (std::invalid_argument e) {
+        } catch (std::invalid_argument &e) {
             std::cout << "Invalid amount\n\n";
             return;
         }
@@ -297,11 +278,11 @@ void CLI::itemFocus(std::string index) {
             }
         }
     }
-    catch (RepoException e) {
+    catch (RepoException &e) {
         std::cout << "Invalid index\n";
         return;
     }
-    catch (std::invalid_argument e) {
+    catch (std::invalid_argument &e) {
         std::cout << "Invalid index\n";
         return;
     }
@@ -321,7 +302,7 @@ void CLI::hiF_enchant(unsigned int index) {
         } else {
             std::cout << "Item cannot be enchanted\n";
         }
-    } catch (EnchantException e) {
+    } catch (EnchantException &e) {
         std::cout << e.what() << std::endl;
     }
     std::cout << std::endl;

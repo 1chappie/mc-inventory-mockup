@@ -10,6 +10,8 @@
 #include "../exceptions/RepoException.hpp"
 #include <utility>
 #include "../domain/IItem.h"
+#include <fstream>
+#include "Domain.h"
 
 using std::vector;
 using std::pair, std::make_pair;
@@ -20,12 +22,11 @@ protected:
     std::string filePath;
 
 public:
+    Domain &domain;
+
     friend class InventoryService;
 
-    /**
-     * Default empty constructor - initializes empty inventory
-     */
-    Repo();
+    Repo(Domain &_domain, const string &filePath = "../data/inventory.csv");
 
     /**
      * Copy constructor
@@ -34,6 +35,14 @@ public:
     Repo(const Repo &other);
 
     ~Repo() = default;
+
+    bool load(std::string _filePath);
+
+    bool refresh();
+
+    bool save(std::string filePath);
+
+    bool save();
 
     /**
      * Adds a slot to the inventory. The slots are formatted as follows: <br>

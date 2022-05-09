@@ -45,6 +45,12 @@ public:
     unsigned int getDurability() const;
 
     /**
+     * Get the maximum durability of the item.
+     * @return maximum durability
+     */
+    unsigned int getDurabilityMax() const;
+
+    /**
      * Set the durability of the item. <br>
      * <u>This method is unsafe - values are not clamped. addDurability() should be used instead.</u>
      * @param _quantity new durability

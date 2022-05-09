@@ -91,6 +91,7 @@ void InventoryService::give(IItem *item, unsigned int amount) {
         while (amount--)
             this->repo->addSlot(item, 1);
     }
+    this->repo->save();
 }
 
 unsigned int InventoryService::hGive_fill_preceding(StackableItem *item, unsigned int amount) {
@@ -121,6 +122,7 @@ void InventoryService::clear(IItem *item, unsigned int amount) {
         if (this->getLastRef(item)->second == 0)
             this->repo->popSlot(item);
     }
+    this->repo->save();
 }
 
 void InventoryService::clear() {

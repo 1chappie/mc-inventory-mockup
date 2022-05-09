@@ -4,10 +4,15 @@
 #include "Repo.h"
 #include <iostream>
 #include <fstream>
+#include <sstream>
 
-Repo::Repo() : slots(vector<pair<IItem *, unsigned int>>()) {}
+Repo::Repo(Domain &_domain, const string &_filePath) :
+        slots(vector<pair<IItem *, unsigned int>>()),
+        filePath(_filePath),
+        domain(_domain) {
+}
 
-Repo::Repo(const Repo &other) : slots(other.slots) {}
+Repo::Repo(const Repo &other) = default;
 
 void Repo::addSlot(IItem *_item, unsigned int _qty) {
     // Due to the way a minecraft inventory works, the items are stackable (up to 64), therefore we will call
@@ -74,4 +79,45 @@ vector<pair<struct IItem *, unsigned int>> &Repo::getAll() {
 
 unsigned int Repo::size() {
     return this->slots.size();
+}
+
+bool Repo::load(std::string _filePath) {
+    std::ifstream file(_filePath);
+    this->filePath = _filePath;
+    if (!file.is_open())
+        return false;
+    std::string line;
+    while (std::getline(file, line)) {
+        std::stringstream ss(line);
+        std::string id;
+        std::string qty;
+        std::getline(ss, id, ',');
+        std::getline(ss, qty, '\n');
+        unsigned int q = std::stoi(qty);
+        IItem *item = this->domain.get(id);
+        if (!item)
+            return false;
+        this->slots.push_back(make_pair(item, q));
+    }
+    file.close();
+    return true;
+}
+
+bool Repo::refresh() {
+    return this->load(this->filePath);
+}
+
+bool Repo::save(std::string filePath) {
+    std::ofstream file(filePath);
+    if (!file.is_open())
+        return false;
+    for (auto &slot: this->slots) {
+        file << slot.first->getID() << "," << slot.second << std::endl;
+    }
+    file.close();
+    return true;
+}
+
+bool Repo::save() {
+    return this->save(this->filePath);
 }

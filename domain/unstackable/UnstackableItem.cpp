@@ -48,3 +48,7 @@ string UnstackableItem::getTooltip() const {
                    std::to_string(this->durabilityMax) + "\n";
     return tooltip;
 }
+
+unsigned int UnstackableItem::getDurabilityMax() const {
+    return this->durabilityMax;
+}
