@@ -17,16 +17,38 @@ private:
     string id;
     unsigned int qty;
 public:
+    /**
+     * Constructor for Command
+     * @param c Command type enum comm::(give, clear)
+     * @param id id of the item
+     * @param qty quantity
+     */
     Command(comm c, string id, unsigned int qty);
 
     Command() = delete;
 
+    /**
+     * Reverse a command and return its opposite
+     * @return opposite command
+     */
     Command reverse();
 
+    /**
+     * Get the command type
+     * @return comm::(give, clear)
+     */
     comm getCommand();
 
+    /**
+     * Get the id of the item
+     * @return id
+     */
     string getId();
 
+    /**
+     * Get the quantity
+     * @return quantity
+     */
     unsigned int getQty();
 };
 

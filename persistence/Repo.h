@@ -22,10 +22,18 @@ protected:
     std::string filePath;
 
 public:
+    // The design of this class was updated to accommodate csv read/ write operations,
+    // and it's very botched. It should've been done within a different service,
+    // but it's too late now.
     Domain &domain;
 
     friend class InventoryService;
 
+    /**
+     * Constructor for the Repo class
+     * @param _domain domain for loading and saving references
+     * @param filePath path to the file to load from, defaults to "../data/inventory.csv"
+     */
     Repo(Domain &_domain, const string &filePath = "../data/inventory.csv");
 
     /**
@@ -36,12 +44,34 @@ public:
 
     ~Repo() = default;
 
+    // THE CSV READ/WRITE OPERATIONS ARE DEPENDENT ON THE DOMAIN. NOT IDEAL BUT IT IS WHAT IT IS.
+    // THE CSV FILE ONLY STORES THE ITEM ID S AND THE QUANTITY OF EACH SLOT.
+    // ITEM BUILDING INFORMATION MUST BE READ FROM THE DOMAIN.
+
+    /**
+     * Loads the inventory from a given csv file. If successful, the new csv is saved to the filePath.
+     * @param _filePath csv path
+     * @return true if successful, false otherwise
+     */
     bool load(std::string _filePath);
 
+    /**
+     * Reloads the inventory from the internal filePath.
+     * @return true if successful, false otherwise
+     */
     bool refresh();
 
+    /**
+     * Saves the inventory to the given csv path.
+     * @param filePath csv path
+     * @return true if successful, false otherwise
+     */
     bool save(std::string filePath);
 
+    /**
+     * Saves the inventory to the internal filePath.
+     * @return true if successful, false otherwise
+     */
     bool save();
 
     /**

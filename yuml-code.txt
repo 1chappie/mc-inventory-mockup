@@ -1,8 +1,8 @@
 [IItem]^--.-[StackableItem]
 
-[<<Interface>>;IItem|#id: string;#displayName: string;#canPlace: bool| +getID(): string; +getDisplayName(): string; +isStackable(): bool; +getTooltip(): string]
+[<<Interface>>;IItem|#id: string;#displayName: string;#canPlace: bool| +getID(): string; +getDisplayName(): string; +isStackable(): bool; +getTooltip(): string ;+isEnchantable(): bool; +itemType(): string ]
 
-[StackableItem| #maxStack: uint| +StackableItem(string,string,uint,bool);+getMaxStack(): uint; +isStackable(): bool ; +getTooltip(): string ]
+[StackableItem| #maxStack: uint| +StackableItem(string,string,uint,bool);+getMaxStack(): uint; +isStackable(): bool ; +getTooltip(): string]
 
 [StackableItem]^-[Consumable]
 
@@ -32,26 +32,30 @@
 
 [Armour]<>-[ArmourBuilder]
 
-[Repo|#slots: vector(IItem*
-uint)| +Repo(); +Repo(Repo); +addSlot(IItem*
-uint); +updateSlot(IItem*
-uint); +updateSlotAt(uint
-IItem*
-uint); +popSlot(IItem*); +popSlotAt(uint); +lastSlotWhere(IItem*): &(IItem*
-uint); +firstSlotWhere(IItem*): &(IItem*
-uint); +slotAt(uint): &(IItem*
-uint); +getAll(): vector(IItem*
-uint); +size(): int]
+[Repo|#slots: vector(IItem* uint); #filePath: string| +Repo(); +Repo(Repo);+domain: &Domain; +load(string):bool; +refresh(): bool; +save(string): bool; +save(): bool; +addSlot(IItem* uint); +updateSlot(IItem*, uint); +updateSlotAt(uint IItem*, uint); +popSlot(IItem*); +popSlotAt(uint); +lastSlotWhere(IItem*): &(IItem*, uint); +firstSlotWhere(IItem*): &(IItem*, uint); +slotAt(uint): &(IItem*, uint); +getAll(): vector(IItem*, uint); +size(): int]
 
-[Repo]->[IItem]
 
-[InventoryService|-Repo*: repo; -hGive_fill_preceding(StackableItem,uint) :uint; +hGive_normalize_surplus(StackableItem
-uint): uint| +InventoryService(&Repo); +getLastRef(IItem*): (IItem*,uint); +getLastRef(string): (IItem*,uint); +getFirstRef(IItem*): (IItem*,uint); +getFirstRef(string): (IItem*,uint); +total(IItem*): uint; +total(): uint; +getAll(): vector(IItem*
-uint); +give(IItem*,uint); +clear(IItem*,uint); +clear()]
 
-[InventoryService]->[Repo]
+[InventoryService|-Repo*: repo; -commands: Commands; -hGive_fill_preceding(StackableItem,uint) :uint; +hGive_normalize_surplus(StackableItem
+uint): uint; +hCommands_execute(Command) :bool| +InventoryService(&Repo); +getLastRef(IItem*): (IItem*,uint); +getLastRef(string): (IItem*,uint); +getFirstRef(IItem*): (IItem*,uint); +getFirstRef(string): (IItem*,uint); +total(IItem*): uint; +total(): uint; +getAll(): vector(IItem*
+uint); +give(IItem*,uint, bool); +clear(IItem*,uint, bool); +clear(); +undo(); +redo()]
+
+[InventoryService]-<>[Repo]
 
 [EnchantmentService||+enchant(Armour*);+enchant(Weapon*)]
 
 [Weapon]<-[EnchantmentService]
 [Armour]<-[EnchantmentService]
+
+[Command| -command:comm; -id: string; -qty: uint|+Command(comm, string, uint); +reverse(): Command; +getCommand(): comm; +getId(): string; +getQty(): uint]
+
+[Commands| -history: stack(Command); -future: stack(Command)| +Commands(); +did(command); +undo(): Command; +redo(): Command]
+
+[Commands]->[Command]
+[InventoryService]->[Commands]
+
+[Domain| -path: string; -stackables: vector(StackableItems); -unstackables: vector(UnstackableItems); -consumables: vector(Consumables); -weapons: vector(Weapon); -armours: vector(Armour)| +Domain(string); +Domain(); +load(string): bool; +refresh(): bool; +save(string): bool; +save(): bool; +write(IItem*); +deleteItem(string): bool; +get(string): IItem*; +getAll(): vector(IItem*)]
+
+[IItem]<-[Repo]
+[Domain]<-[Repo]
+

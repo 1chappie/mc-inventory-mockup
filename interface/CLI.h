@@ -47,8 +47,10 @@ private:
 
     void hcP_printHelp();
 
+    // Wrapper for the undo() command in the service.
     void hcP_undoCommand();
 
+    // Wrapper for the redo() command in the service.
     void hcP_redoCommand();
 
     // Accessed via the "focus <index>" command, this

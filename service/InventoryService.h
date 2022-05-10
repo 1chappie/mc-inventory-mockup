@@ -34,6 +34,7 @@ private:
     // slots with max stacks are necessary. It then returns the amount of items that remained.
     unsigned int hGive_normalize_surplus(StackableItem *item, unsigned int amount);
 
+    // Executes a command given via a Command object.
     bool hCommands_execute(Command command);
 
 
@@ -140,8 +141,16 @@ public:
      */
     void clear();
 
+    /*
+     * Undoes the previous action.
+     * @return true if an action was undone, false otherwise
+     */
     bool undo();
 
+    /**
+     * Redoes the previous undo. Must be used after one or more calls to undo().
+     * @return true if an action was redone, false otherwise
+     */
     bool redo();
 
 };
