@@ -22,6 +22,7 @@ IItem::IItem(const string &_id, const string &_displayName, const bool &_canPlac
 // so I'll leave it here
 IItem::IItem() {
     this->id = "null";
+    this->displayName = "null";
 }
 
 bool IItem::operator==(const IItem &other) const {

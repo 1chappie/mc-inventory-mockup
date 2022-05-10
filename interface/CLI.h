@@ -47,6 +47,10 @@ private:
 
     void hcP_printHelp();
 
+    void hcP_undoCommand();
+
+    void hcP_redoCommand();
+
     // Accessed via the "focus <index>" command, this
     // opens up a submenu that allows the user to inspect a specific slot
     // and the item type in it.

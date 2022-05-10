@@ -1,10 +1,16 @@
 stackable-item,ender_pearl,Ender Pearl,16
 stackable-item,oak_wood,Oak Wood,64
 stackable-item,oak_planks,Oak Planks,64
+stackable-item,gold_ingot,Gold Ingot,64
+stackable-item,gold_block,Gold Block,64
+stackable-item,iron_block,Iron Block,64
 consumable,steak,Steak,64,2
-consumable,carrot,Carrot,64,3
+consumable,chicken_breast,Chicken Breast,64,7
+consumable,beetroot,Beetroot,64,6
+consumable,apple,Apple,64,5
+consumable,carrot,Carrot,64,4
 unstackable-item,bed,Bed
 armour,diamond_armour,Diamond Armour,200,100,5
 armour,gold_armour,Gold Armour,60,30,3
-armour,diamond_leggings,Diamond Leggings,300,270,5
+armour,diamond_leggings,Diamond Leggings,300,270,7
 weapon,diamond_sword,Diamond Sword,100,100,7

@@ -33,4 +33,4 @@ add_executable(mc_inventory_mockup
         service/EnchantmentService.h
         exceptions/EnchantException.hpp
         interface/CLI.cpp
-        interface/CLI.h persistence/Domain.cpp persistence/Domain.h)
+        interface/CLI.h persistence/Domain.cpp persistence/Domain.h domain/Command.cpp domain/Command.h persistence/Commands.cpp persistence/Commands.h)

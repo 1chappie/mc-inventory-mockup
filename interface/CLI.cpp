@@ -90,7 +90,7 @@ void CLI::hdM_domainWizard() {
             int saturation;
             std::cout << "Enter saturation:";
             std::cin >> saturation;
-            static Consumable newConsumable = Consumable::build()
+            Consumable newConsumable = Consumable::build()
                     .withID(id)
                     .withDisplayName(name)
                     .withMaxStack(stackSize)
@@ -103,7 +103,7 @@ void CLI::hdM_domainWizard() {
             std::cin >> input;
             if (input == "y" || input == "n") canPlace = true;
             else canPlace = false;
-            static StackableItem newStackable = StackableItem(id, name, stackSize, canPlace);
+            StackableItem newStackable = StackableItem(id, name, stackSize, canPlace);
             this->invServ->repo->domain.write(dynamic_cast<IItem *>(&newStackable));
         }
     } else {
@@ -112,60 +112,56 @@ void CLI::hdM_domainWizard() {
         std::cin >> type;
         unsigned int durabilityMax;
         unsigned int durabilityCurrent;
-        switch (type[0]) {
-            case 'a':
+        if (type[0] == 'a') {
+            std::cout << "Max durability:";
+            std::cin >> durabilityMax;
+            std::cout << "Current durability:";
+            std::cin >> durabilityCurrent;
+            unsigned int protection;
+            std::cout << "Protection level:";
+            std::cin >> protection;
+            Armour newArmour = Armour::build()
+                    .withID(id)
+                    .withDisplayName(name)
+                    .withDurabilityMax(durabilityMax)
+                    .withDurability(durabilityCurrent)
+                    .withProtectionLevel(protection)
+                    .withEnchantments(std::list<aEnchantments>());
+            this->invServ->repo->domain.write(dynamic_cast<IItem *>(&newArmour));
+        } else if (type[0] == 'w') {
+            std::cout << "Max durability:";
+            std::cin >> durabilityMax;
+            std::cout << "Current durability:";
+            std::cin >> durabilityCurrent;
+            unsigned int damage;
+            std::cout << "Damage:";
+            std::cin >> damage;
+            Weapon newWeapon = Weapon::build()
+                    .withID(id)
+                    .withDisplayName(name)
+                    .withDurabilityMax(durabilityMax)
+                    .withDurability(durabilityCurrent)
+                    .withDamage(damage)
+                    .withEnchantments(std::list<wEnchantments>());
+            this->invServ->repo->domain.write(dynamic_cast<IItem *>(&newWeapon));
+        } else {
+            std::cout << "Has durability? (y/n):";
+            bool hasDurability;
+            std::cin >> input;
+            if (input == "y" || input == "Y") hasDurability = true;
+            else hasDurability = false;
+            if (hasDurability) {
+                std::cout.flush();
                 std::cout << "Max durability:";
                 std::cin >> durabilityMax;
                 std::cout << "Current durability:";
                 std::cin >> durabilityCurrent;
-                unsigned int protection;
-                std::cout << "Protection level:";
-                std::cin >> protection;
-                static Armour newArmour = Armour::build()
-                        .withID(id)
-                        .withDisplayName(name)
-                        .withDurabilityMax(durabilityMax)
-                        .withDurability(durabilityCurrent)
-                        .withProtectionLevel(protection)
-                        .withEnchantments(std::list<aEnchantments>());
-                this->invServ->repo->domain.write(dynamic_cast<IItem *>(&newArmour));
-                break;
-            case 'w':
-                std::cout << "Max durability:";
-                std::cin >> durabilityMax;
-                std::cout << "Current durability:";
-                std::cin >> durabilityCurrent;
-                unsigned int damage;
-                std::cout << "Damage:";
-                std::cin >> damage;
-                static Weapon newWeapon = Weapon::build()
-                        .withID(id)
-                        .withDisplayName(name)
-                        .withDurabilityMax(durabilityMax)
-                        .withDurability(durabilityCurrent)
-                        .withDamage(damage)
-                        .withEnchantments(std::list<wEnchantments>());
-                this->invServ->repo->domain.write(dynamic_cast<IItem *>(&newWeapon));
-                break;
-            default:
-                std::cout << "Has durability? (y/n):";
-                bool hasDurability;
-                std::cin >> input;
-                if (input == "y" || input == "Y") hasDurability = true;
-                else hasDurability = false;
-                if (hasDurability) {
-                    std::cout.flush();
-                    std::cout << "Max durability:";
-                    std::cin >> durabilityMax;
-                    std::cout << "Current durability:";
-                    std::cin >> durabilityCurrent;
-                    static UnstackableItem newUnstackable = UnstackableItem(id, name, durabilityCurrent, durabilityMax);
-                    this->invServ->repo->domain.write(dynamic_cast<IItem *>(&newUnstackable));
-                } else {
-                    static UnstackableItem newUnstackable = UnstackableItem(id, name);
-                    this->invServ->repo->domain.write(dynamic_cast<IItem *>(&newUnstackable));
-                }
-                break;
+                UnstackableItem newUnstackable = UnstackableItem(id, name, durabilityCurrent, durabilityMax);
+                this->invServ->repo->domain.write(dynamic_cast<IItem *>(&newUnstackable));
+            } else {
+                UnstackableItem newUnstackable = UnstackableItem(id, name);
+                this->invServ->repo->domain.write(dynamic_cast<IItem *>(&newUnstackable));
+            }
         }
     }
     std::cout << "Item created!\n\n";
@@ -193,6 +189,10 @@ void CLI::commandParser(std::string command) {
         this->itemFocus(arg1);
     else if (commandName == "help")
         this->hcP_printHelp();
+    else if (commandName == "undo")
+        this->hcP_undoCommand();
+    else if (commandName == "redo")
+        this->hcP_redoCommand();
     else if (commandName == "quit" || commandName == "q" || commandName == "exit")
         exit(0);
     else
@@ -333,5 +333,19 @@ void CLI::run() {
         std::getline(std::cin >> std::ws, command);
         this->commandParser(command);
     }
+}
+
+void CLI::hcP_undoCommand() {
+    if (this->invServ->undo())
+        std::cout << "Rolled back last command\n";
+    else
+        std::cout << "Nothing to undo\n";
+}
+
+void CLI::hcP_redoCommand() {
+    if (this->invServ->redo())
+        std::cout << "Restored last undo\n";
+    else
+        std::cout << "Nothing to redo\n";
 }
 

@@ -24,6 +24,11 @@ bool Domain::load(const string &_path) {
     if (!fileLocation.is_open())
         return false;
 
+    stackables.clear();
+    unstackables.clear();
+    consumables.clear();
+    weapons.clear();
+    armours.clear();
     std::string line, word;
     vector<string> row;
     while (getline(fileLocation, line)) {
@@ -34,9 +39,11 @@ bool Domain::load(const string &_path) {
         if (row.empty())
             continue;
         if (row[0] == "stackable-item") {
-            this->stackables.emplace_back(row[1], row[2], stoi(row[3]));
+            auto st = StackableItem(row[1], row[2], stoi(row[3]));
+            this->stackables.push_back(st);
         } else if (row[0] == "unstackable-item") {
-            this->unstackables.emplace_back(row[1], row[2]);
+            auto ust = UnstackableItem(row[1], row[2]);
+            this->unstackables.push_back(ust);
         } else if (row[0] == "armour") {
             Armour a = Armour::build()
                     .withID(row[1])
@@ -45,7 +52,7 @@ bool Domain::load(const string &_path) {
                     .withDurability(stoi(row[4]))
                     .withProtectionLevel(stoi(row[5]))
                     .withEnchantments({});
-            this->armours.emplace_back(a);
+            this->armours.push_back(a);
         } else if (row[0] == "weapon") {
             Weapon w = Weapon::build()
                     .withID(row[1])
@@ -54,7 +61,7 @@ bool Domain::load(const string &_path) {
                     .withDurability(stoi(row[4]))
                     .withDamage(stoi(row[5]))
                     .withEnchantments({});
-            this->weapons.emplace_back(w);
+            this->weapons.push_back(w);
         } else if (row[0] == "consumable") {
             Consumable c = Consumable::build()
                     .withID(row[1])
@@ -62,7 +69,7 @@ bool Domain::load(const string &_path) {
                     .withMaxStack(stoi(row[3]))
                     .withSaturation(stoi(row[4]))
                     .withEffects({});
-            this->consumables.emplace_back(c);
+            this->consumables.push_back(c);
         } else {
             fileLocation.close();
             return false;

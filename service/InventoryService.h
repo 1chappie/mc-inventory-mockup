@@ -13,10 +13,13 @@
 #include "stackable/StackableItem.h"
 #include "unstackable/UnstackableItem.h"
 #include <string>
+#include "../persistence/Commands.h"
 
 class InventoryService {
 private:
     Repo *repo;
+
+    Commands commands;
 
     // I recommend that you read the documentation of the give() function (below) before reading
     // these private ones, and also maybe look at a video of minecraft or two if you have
@@ -30,6 +33,8 @@ private:
     // If the amount is greater than the max stack size of the item, it creates however many
     // slots with max stacks are necessary. It then returns the amount of items that remained.
     unsigned int hGive_normalize_surplus(StackableItem *item, unsigned int amount);
+
+    bool hCommands_execute(Command command);
 
 
 public:
@@ -114,7 +119,7 @@ public:
      * @param item Item to be added. Must be an instance of IItem.
      * @param amount Amount of items to be added. Defaults to 1.
      */
-    void give(IItem *item, unsigned int amount = 1);
+    void give(IItem *item, unsigned int amount = 1, bool log = true);
     // I tried making this as similar to Minecraft as I could. And besides the fact
     // that you can't freely place around items in slots on a 2D grid
     // (therefore cannot have empty slots), I'd say that I've gotten pretty close.
@@ -128,12 +133,16 @@ public:
      * @param item Item to be removed. Must be an instance of IItem.
      * @param amount Amount of items to be removed. Defaults to 1.
      */
-    void clear(IItem *item, unsigned int amount = 1);
+    void clear(IItem *item, unsigned int amount = 1, bool log = true);
 
     /**
      * Clear all items from the inventory.
      */
     void clear();
+
+    bool undo();
+
+    bool redo();
 
 };
 
